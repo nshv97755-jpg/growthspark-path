@@ -10,14 +10,14 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 
-const nav: { label: string; to: string; icon: typeof LayoutDashboard; exact?: boolean }[] = [
+const nav = [
   { label: "Dashboard", to: "/dashboard", icon: LayoutDashboard, exact: true },
-  { label: "Analyze Profile", to: "/dashboard/analyze", icon: ScanSearch },
-  { label: "Reports", to: "/dashboard/reports", icon: FileText },
-  { label: "History", to: "/dashboard/history", icon: History },
-  { label: "Billing", to: "/dashboard/billing", icon: CreditCard },
-  { label: "Settings", to: "/dashboard/settings", icon: Settings },
-];
+  { label: "Analyze Profile", to: "/dashboard/analyze", icon: ScanSearch, exact: false },
+  { label: "Reports", to: "/dashboard/reports", icon: FileText, exact: false },
+  { label: "History", to: "/dashboard/history", icon: History, exact: false },
+  { label: "Billing", to: "/dashboard/billing", icon: CreditCard, exact: false },
+  { label: "Settings", to: "/dashboard/settings", icon: Settings, exact: false },
+] as const;
 
 export function DashboardSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
