@@ -31,7 +31,7 @@ import { reportData, sampleAnalysis } from "@/lib/mock";
 
 export const Route = createFileRoute("/dashboard/report")({
   head: () => ({ meta: [{ title: "Premium Report — GrowthPilot" }] }),
-  component: ReportPage;
+  component: ReportPage,
 });
 
 const pieColors = [
