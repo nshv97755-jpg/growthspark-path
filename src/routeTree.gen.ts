@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardReportsRouteImport } from './routes/dashboard.reports'
 import { Route as DashboardReportRouteImport } from './routes/dashboard.report'
+import { Route as DashboardHistoryRouteImport } from './routes/dashboard.history'
 import { Route as DashboardAnalyzeRouteImport } from './routes/dashboard.analyze'
 
 const DashboardRoute = DashboardRouteImport.update({
@@ -47,6 +48,11 @@ const DashboardReportRoute = DashboardReportRouteImport.update({
   path: '/report',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardHistoryRoute = DashboardHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardAnalyzeRoute = DashboardAnalyzeRouteImport.update({
   id: '/analyze',
   path: '/analyze',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/analyze': typeof DashboardAnalyzeRoute
+  '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/report': typeof DashboardReportRoute
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard/analyze': typeof DashboardAnalyzeRoute
+  '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/report': typeof DashboardReportRoute
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard': typeof DashboardIndexRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/analyze': typeof DashboardAnalyzeRoute
+  '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/report': typeof DashboardReportRoute
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/dashboard/analyze'
+    | '/dashboard/history'
     | '/dashboard/report'
     | '/dashboard/reports'
     | '/dashboard/'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard/analyze'
+    | '/dashboard/history'
     | '/dashboard/report'
     | '/dashboard/reports'
     | '/dashboard'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/dashboard/analyze'
+    | '/dashboard/history'
     | '/dashboard/report'
     | '/dashboard/reports'
     | '/dashboard/'
@@ -159,6 +171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardReportRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/history': {
+      id: '/dashboard/history'
+      path: '/history'
+      fullPath: '/dashboard/history'
+      preLoaderRoute: typeof DashboardHistoryRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/analyze': {
       id: '/dashboard/analyze'
       path: '/analyze'
@@ -171,6 +190,7 @@ declare module '@tanstack/react-router' {
 
 interface DashboardRouteChildren {
   DashboardAnalyzeRoute: typeof DashboardAnalyzeRoute
+  DashboardHistoryRoute: typeof DashboardHistoryRoute
   DashboardReportRoute: typeof DashboardReportRoute
   DashboardReportsRoute: typeof DashboardReportsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
@@ -178,6 +198,7 @@ interface DashboardRouteChildren {
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardAnalyzeRoute: DashboardAnalyzeRoute,
+  DashboardHistoryRoute: DashboardHistoryRoute,
   DashboardReportRoute: DashboardReportRoute,
   DashboardReportsRoute: DashboardReportsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
