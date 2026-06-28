@@ -16,8 +16,6 @@ import {
 import {
   Area,
   AreaChart,
-  Bar,
-  BarChart,
   Cell,
   Pie,
   PieChart,
@@ -288,6 +286,3 @@ function Section({
   );
 }
 
-// keep BarChart/Bar imports referenced for future use
-void BarChart;
-void Bar;
