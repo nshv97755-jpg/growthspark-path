@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "motion/react";
 import {
   ArrowUpRight,
   TrendingUp,
@@ -149,5 +148,3 @@ function Overview() {
   );
 }
 
-// silence unused import warning for motion in some bundlers
-void motion;
