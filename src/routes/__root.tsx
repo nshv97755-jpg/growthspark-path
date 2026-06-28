@@ -92,6 +92,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "GrowthPilot — Discover Why You're Not Growing" },
+      { name: "description", content: "GrowthPilot AI analyzes social media profiles to reveal growth blockers and provide actionable strategies." },
+      { property: "og:description", content: "GrowthPilot AI analyzes social media profiles to reveal growth blockers and provide actionable strategies." },
+      { name: "twitter:description", content: "GrowthPilot AI analyzes social media profiles to reveal growth blockers and provide actionable strategies." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/d1tC3nbaspcat7r9JglGXyJAUvg1/social-images/social-1782629909666-ChatGPT_Image_Jun_21,_2026_at_11_35_58_AM.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/d1tC3nbaspcat7r9JglGXyJAUvg1/social-images/social-1782629909666-ChatGPT_Image_Jun_21,_2026_at_11_35_58_AM.webp" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
