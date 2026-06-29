@@ -1,4 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { motion } from "motion/react";
+import { toast } from "sonner";
 import {
   Download,
   Save,
@@ -12,6 +15,7 @@ import {
   Users,
   Quote,
   TrendingUp,
+  Sparkles,
 } from "lucide-react";
 import {
   Area,
@@ -25,6 +29,7 @@ import {
 } from "recharts";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { reportData, sampleAnalysis } from "@/lib/mock";
 
 export const Route = createFileRoute("/dashboard/report")({
@@ -39,7 +44,55 @@ const pieColors = [
   "oklch(0.8 0.16 78)",
 ];
 
+function ReportSkeleton() {
+  return (
+    <div className="mx-auto max-w-5xl space-y-8">
+      <div className="relative overflow-hidden rounded-3xl glass-strong p-8 shadow-card">
+        <div className="flex items-center gap-3 text-accent">
+          <motion.span
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: "linear" }}
+          >
+            <Sparkles className="h-5 w-5" />
+          </motion.span>
+          <span className="font-display text-sm font-medium">Compiling your growth report…</span>
+        </div>
+        <Skeleton className="mt-5 h-9 w-2/3" />
+        <Skeleton className="mt-3 h-4 w-1/2" />
+        <div className="mt-6 flex gap-2">
+          <Skeleton className="h-8 w-28 rounded-full" />
+          <Skeleton className="h-8 w-28 rounded-full" />
+        </div>
+      </div>
+      {[0, 1, 2].map((i) => (
+        <div key={i} className="rounded-3xl glass p-6 sm:p-8">
+          <div className="mb-5 flex items-center gap-3">
+            <Skeleton className="h-10 w-10 rounded-xl" />
+            <Skeleton className="h-5 w-48" />
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Skeleton className="h-24 rounded-2xl" />
+            <Skeleton className="h-24 rounded-2xl" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function ReportPage() {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setReady(true), 1100);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (!ready) return <ReportSkeleton />;
+
+  return <ReportContent />;
+}
+
+function ReportContent() {
   return (
     <div className="mx-auto max-w-5xl space-y-8">
       {/* Header */}
@@ -59,10 +112,10 @@ function ReportPage() {
             Your complete, personalized playbook to break the plateau and scale.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
-            <Button variant="hero" size="sm">
+            <Button variant="hero" size="sm" onClick={() => toast.success("Generating your PDF…")}>
               <Download className="mr-1 h-4 w-4" /> Export PDF
             </Button>
-            <Button variant="glass" size="sm">
+            <Button variant="glass" size="sm" onClick={() => toast.success("Report saved to your library")}>
               <Save className="mr-1 h-4 w-4" /> Save report
             </Button>
             <Button asChild variant="glass" size="sm">

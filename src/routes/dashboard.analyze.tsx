@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { toast } from "sonner";
 import {
   Search,
   Sparkles,
@@ -41,7 +42,7 @@ function Analyze() {
         )}
         {stage === "loading" && <Loading key="loading" onDone={() => setStage("result")} />}
         {stage === "result" && (
-          <Result key="result" onReset={() => setStage("idle")} />
+          <Result key="result" username={username} onReset={() => setStage("idle")} />
         )}
       </AnimatePresence>
     </div>
@@ -77,6 +78,10 @@ function Idle({
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          if (!username.trim()) {
+            toast.error("Enter an Instagram username to analyze");
+            return;
+          }
           onStart();
         }}
         className="mt-9 w-full max-w-xl"
@@ -88,6 +93,7 @@ function Idle({
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter Instagram Username"
+              aria-label="Instagram username"
               className="h-12 border-0 bg-transparent pl-11 text-base focus-visible:ring-0"
             />
           </div>
@@ -162,9 +168,11 @@ function Loading({ onDone }: { onDone: () => void }) {
   );
 }
 
-function Result({ onReset }: { onReset: () => void }) {
+function Result({ username, onReset }: { username: string; onReset: () => void }) {
   const navigate = useNavigate();
-  const a = sampleAnalysis;
+  const handle = username.trim().replace(/^@/, "") || sampleAnalysis.username;
+  const a = { ...sampleAnalysis, username: handle };
+
 
   return (
     <motion.div

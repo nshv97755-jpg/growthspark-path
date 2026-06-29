@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — GrowthPilot" }] }),
@@ -64,7 +64,7 @@ function NotificationBell() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative rounded-full">
+        <Button variant="ghost" size="icon" className="relative rounded-full" aria-label="Notifications">
           <Bell className="h-5 w-5" />
           {unread > 0 && (
             <span className="absolute right-1.5 top-1.5 flex h-2 w-2">
@@ -104,7 +104,7 @@ function MobileNav() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden">
+        <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open navigation menu">
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>
@@ -112,13 +112,16 @@ function MobileNav() {
         <Logo />
         <nav className="mt-8 flex flex-col gap-1">
           {mobileLinks.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              className="rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-            >
-              {l.label}
-            </Link>
+            <SheetClose asChild key={l.to}>
+              <Link
+                to={l.to}
+                activeProps={{ className: "bg-secondary text-foreground" }}
+                activeOptions={{ exact: l.to === "/dashboard" }}
+                className="rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              >
+                {l.label}
+              </Link>
+            </SheetClose>
           ))}
         </nav>
       </SheetContent>
