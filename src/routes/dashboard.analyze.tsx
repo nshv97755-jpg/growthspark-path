@@ -42,7 +42,7 @@ function Analyze() {
         )}
         {stage === "loading" && <Loading key="loading" onDone={() => setStage("result")} />}
         {stage === "result" && (
-          <Result key="result" onReset={() => setStage("idle")} />
+          <Result key="result" username={username} onReset={() => setStage("idle")} />
         )}
       </AnimatePresence>
     </div>
