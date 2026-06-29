@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Check, CreditCard, Zap } from "lucide-react";
+import { toast } from "sonner";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 
