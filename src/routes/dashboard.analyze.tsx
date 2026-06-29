@@ -78,6 +78,10 @@ function Idle({
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          if (!username.trim()) {
+            toast.error("Enter an Instagram username to analyze");
+            return;
+          }
           onStart();
         }}
         className="mt-9 w-full max-w-xl"
@@ -89,6 +93,7 @@ function Idle({
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter Instagram Username"
+              aria-label="Instagram username"
               className="h-12 border-0 bg-transparent pl-11 text-base focus-visible:ring-0"
             />
           </div>
