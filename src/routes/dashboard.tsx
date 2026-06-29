@@ -112,13 +112,16 @@ function MobileNav() {
         <Logo />
         <nav className="mt-8 flex flex-col gap-1">
           {mobileLinks.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              className="rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-            >
-              {l.label}
-            </Link>
+            <SheetClose asChild key={l.to}>
+              <Link
+                to={l.to}
+                activeProps={{ className: "bg-secondary text-foreground" }}
+                activeOptions={{ exact: l.to === "/dashboard" }}
+                className="rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              >
+                {l.label}
+              </Link>
+            </SheetClose>
           ))}
         </nav>
       </SheetContent>
