@@ -168,9 +168,11 @@ function Loading({ onDone }: { onDone: () => void }) {
   );
 }
 
-function Result({ onReset }: { onReset: () => void }) {
+function Result({ username, onReset }: { username: string; onReset: () => void }) {
   const navigate = useNavigate();
-  const a = sampleAnalysis;
+  const handle = username.trim().replace(/^@/, "") || sampleAnalysis.username;
+  const a = { ...sampleAnalysis, username: handle };
+
 
   return (
     <motion.div
