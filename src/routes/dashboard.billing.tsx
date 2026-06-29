@@ -37,7 +37,11 @@ function Billing() {
               <h2 className="mt-1 font-display text-3xl font-bold">Free</h2>
               <p className="mt-1 text-sm text-muted-foreground">1 analysis / day · upgrade to unlock full reports</p>
             </div>
-            <Button variant="hero" size="lg">
+            <Button
+              variant="hero"
+              size="lg"
+              onClick={() => toast.success("Pro checkout coming soon — you're on the list!")}
+            >
               <Zap className="mr-1 h-4 w-4" /> Upgrade to Pro
             </Button>
           </div>
@@ -64,7 +68,12 @@ function Billing() {
                   </li>
                 ))}
               </ul>
-              <Button variant={p.highlight ? "hero" : "glass"} size="lg" className="mt-6 w-full">
+              <Button
+                variant={p.highlight ? "hero" : "glass"}
+                size="lg"
+                className="mt-6 w-full"
+                onClick={() => toast.success(`${p.name} plan selected — checkout coming soon`)}
+              >
                 Choose {p.name}
               </Button>
             </div>
@@ -85,7 +94,7 @@ function Billing() {
                 <span className="block text-xs text-muted-foreground">Add a card to upgrade</span>
               </span>
             </span>
-            <Button variant="glass" size="sm">Add card</Button>
+            <Button variant="glass" size="sm" onClick={() => toast("Card form coming soon")}>Add card</Button>
           </div>
         </div>
       </Reveal>
