@@ -64,7 +64,7 @@ function NotificationBell() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative rounded-full">
+        <Button variant="ghost" size="icon" className="relative rounded-full" aria-label="Notifications">
           <Bell className="h-5 w-5" />
           {unread > 0 && (
             <span className="absolute right-1.5 top-1.5 flex h-2 w-2">
@@ -104,7 +104,7 @@ function MobileNav() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden">
+        <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open navigation menu">
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>
