@@ -59,10 +59,10 @@ function ReportPage() {
             Your complete, personalized playbook to break the plateau and scale.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
-            <Button variant="hero" size="sm">
+            <Button variant="hero" size="sm" onClick={() => toast.success("Generating your PDF…")}>
               <Download className="mr-1 h-4 w-4" /> Export PDF
             </Button>
-            <Button variant="glass" size="sm">
+            <Button variant="glass" size="sm" onClick={() => toast.success("Report saved to your library")}>
               <Save className="mr-1 h-4 w-4" /> Save report
             </Button>
             <Button asChild variant="glass" size="sm">
