@@ -19,9 +19,10 @@ export function ScoreRing({
       <svg width={size} height={size} className="-rotate-90">
         <defs>
           <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="oklch(0.64 0.21 282)" />
-            <stop offset="55%" stopColor="oklch(0.66 0.18 320)" />
-            <stop offset="100%" stopColor="oklch(0.78 0.14 200)" />
+            <stop offset="0%" stopColor="#c9a227" />
+            <stop offset="55%" stopColor="#e0b34a" />
+            <stop offset="100%" stopColor="#00c2a8" />
+
           </linearGradient>
         </defs>
         <circle
@@ -48,7 +49,7 @@ export function ScoreRing({
       </svg>
       <div className="absolute flex flex-col items-center">
         <motion.span
-          className="font-display text-5xl font-bold text-foreground"
+          className="font-grotesk text-5xl font-bold text-foreground"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}

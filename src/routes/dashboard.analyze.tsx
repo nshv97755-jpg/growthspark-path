@@ -134,7 +134,7 @@ function Loading({ onDone }: { onDone: () => void }) {
         <span className="absolute inset-0 rounded-full bg-brand opacity-30 blur-2xl animate-pulse-ring" />
         <motion.span
           className="absolute inset-0 rounded-full border-2 border-transparent"
-          style={{ borderTopColor: "oklch(0.78 0.14 200)", borderRightColor: "oklch(0.64 0.21 282)" }}
+          style={{ borderTopColor: "#00c2a8", borderRightColor: "#c9a227" }}
           animate={{ rotate: 360 }}
           transition={{ duration: 1.1, repeat: Infinity, ease: "linear" }}
         />

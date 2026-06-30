@@ -65,7 +65,7 @@ function Overview() {
                   {s.delta}
                 </span>
               </div>
-              <p className="mt-4 font-display text-3xl font-bold">{s.value}</p>
+              <p className="mt-4 font-grotesk text-3xl font-bold tracking-tight">{s.value}</p>
               <p className="text-sm text-muted-foreground">{s.label}</p>
             </div>
           </Reveal>
@@ -89,21 +89,21 @@ function Overview() {
                 <AreaChart data={reportData.forecast}>
                   <defs>
                     <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="oklch(0.64 0.21 282)" stopOpacity={0.5} />
-                      <stop offset="100%" stopColor="oklch(0.64 0.21 282)" stopOpacity={0} />
+                      <stop offset="0%" stopColor="#c9a227" stopOpacity={0.4} />
+                      <stop offset="100%" stopColor="#c9a227" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <XAxis
                     dataKey="month"
-                    stroke="oklch(0.68 0.02 271)"
+                    stroke="#8b8b93"
                     fontSize={12}
                     tickLine={false}
                     axisLine={false}
                   />
                   <Tooltip
                     contentStyle={{
-                      background: "oklch(0.2 0.02 271)",
-                      border: "1px solid oklch(0.3 0.02 271)",
+                      background: "#18181b",
+                      border: "1px solid rgba(255,255,255,0.08)",
                       borderRadius: 12,
                       color: "white",
                     }}
@@ -111,10 +111,11 @@ function Overview() {
                   <Area
                     type="monotone"
                     dataKey="followers"
-                    stroke="oklch(0.64 0.21 282)"
+                    stroke="#c9a227"
                     strokeWidth={3}
                     fill="url(#areaGrad)"
                   />
+
                 </AreaChart>
               </ResponsiveContainer>
             </div>
