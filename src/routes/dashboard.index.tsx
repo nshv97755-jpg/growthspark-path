@@ -65,7 +65,7 @@ function Overview() {
                   {s.delta}
                 </span>
               </div>
-              <p className="mt-4 font-display text-3xl font-bold">{s.value}</p>
+              <p className="mt-4 font-grotesk text-3xl font-bold tracking-tight">{s.value}</p>
               <p className="text-sm text-muted-foreground">{s.label}</p>
             </div>
           </Reveal>
