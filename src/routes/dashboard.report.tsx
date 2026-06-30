@@ -180,11 +180,12 @@ function ReportContent() {
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    background: "oklch(0.2 0.02 271)",
-                    border: "1px solid oklch(0.3 0.02 271)",
+                    background: "#18181b",
+                    border: "1px solid rgba(255,255,255,0.08)",
                     borderRadius: 12,
                     color: "white",
                   }}
+
                 />
               </PieChart>
             </ResponsiveContainer>
