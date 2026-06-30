@@ -19,9 +19,10 @@ export function ScoreRing({
       <svg width={size} height={size} className="-rotate-90">
         <defs>
           <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="oklch(0.64 0.21 282)" />
-            <stop offset="55%" stopColor="oklch(0.66 0.18 320)" />
-            <stop offset="100%" stopColor="oklch(0.78 0.14 200)" />
+            <stop offset="0%" stopColor="#c9a227" />
+            <stop offset="55%" stopColor="#e0b34a" />
+            <stop offset="100%" stopColor="#00c2a8" />
+
           </linearGradient>
         </defs>
         <circle
