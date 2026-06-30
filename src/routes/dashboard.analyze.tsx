@@ -131,14 +131,13 @@ function Loading({ onDone }: { onDone: () => void }) {
       className="flex min-h-[60vh] flex-col items-center justify-center text-center"
     >
       <div className="relative mb-8 flex h-28 w-28 items-center justify-center">
-        <span className="absolute inset-0 rounded-full bg-brand opacity-30 blur-2xl animate-pulse-ring" />
         <motion.span
-          className="absolute inset-0 rounded-full border-2 border-transparent"
-          style={{ borderTopColor: "#00c2a8", borderRightColor: "#c9a227" }}
+          className="absolute inset-0 rounded-full border-[3px] border-secondary"
+          style={{ borderTopColor: "#3b82f6" }}
           animate={{ rotate: 360 }}
-          transition={{ duration: 1.1, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
         />
-        <Sparkles className="h-9 w-9 text-accent" />
+        <Sparkles className="h-9 w-9 text-primary" />
       </div>
 
       <div className="h-8 overflow-hidden">
