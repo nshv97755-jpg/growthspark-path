@@ -17,20 +17,12 @@ export function ScoreRing({
   return (
     <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
-        <defs>
-          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#c9a227" />
-            <stop offset="55%" stopColor="#e0b34a" />
-            <stop offset="100%" stopColor="#00c2a8" />
-
-          </linearGradient>
-        </defs>
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="oklch(1 0 0 / 0.06)"
+          stroke="#e5e7eb"
           strokeWidth={stroke}
         />
         <motion.circle
@@ -38,25 +30,25 @@ export function ScoreRing({
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="url(#ringGrad)"
+          stroke="#3b82f6"
           strokeWidth={stroke}
           strokeLinecap="round"
           strokeDasharray={circumference}
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset: offset }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         />
       </svg>
       <div className="absolute flex flex-col items-center">
         <motion.span
-          className="font-grotesk text-5xl font-bold text-foreground"
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          className="text-5xl font-semibold text-card-foreground"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
         >
           {value}
         </motion.span>
-        <span className="text-xs uppercase tracking-widest text-muted-foreground">/ 100</span>
+        <span className="text-xs text-muted-foreground">/ 100</span>
         <span className="mt-1 text-sm font-medium text-muted-foreground">{label}</span>
       </div>
     </div>
