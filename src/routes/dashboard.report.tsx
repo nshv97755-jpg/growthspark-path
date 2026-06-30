@@ -38,10 +38,11 @@ export const Route = createFileRoute("/dashboard/report")({
 });
 
 const pieColors = [
-  "oklch(0.64 0.21 282)",
-  "oklch(0.78 0.14 200)",
-  "oklch(0.74 0.16 156)",
-  "oklch(0.8 0.16 78)",
+  "#c9a227",
+  "#00c2a8",
+  "#4fb286",
+  "#e0b34a",
+
 ];
 
 function ReportSkeleton() {
