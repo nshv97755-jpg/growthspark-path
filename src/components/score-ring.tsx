@@ -49,7 +49,7 @@ export function ScoreRing({
       </svg>
       <div className="absolute flex flex-col items-center">
         <motion.span
-          className="font-display text-5xl font-bold text-foreground"
+          className="font-grotesk text-5xl font-bold text-foreground"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
