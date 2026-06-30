@@ -234,20 +234,21 @@ function ReportContent() {
             <AreaChart data={reportData.forecast}>
               <defs>
                 <linearGradient id="repArea" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="oklch(0.78 0.14 200)" stopOpacity={0.5} />
-                  <stop offset="100%" stopColor="oklch(0.78 0.14 200)" stopOpacity={0} />
+                  <stop offset="0%" stopColor="#00c2a8" stopOpacity={0.45} />
+                  <stop offset="100%" stopColor="#00c2a8" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <XAxis dataKey="month" stroke="oklch(0.68 0.02 271)" fontSize={12} tickLine={false} axisLine={false} />
+              <XAxis dataKey="month" stroke="#8b8b93" fontSize={12} tickLine={false} axisLine={false} />
               <Tooltip
                 contentStyle={{
-                  background: "oklch(0.2 0.02 271)",
-                  border: "1px solid oklch(0.3 0.02 271)",
+                  background: "#18181b",
+                  border: "1px solid rgba(255,255,255,0.08)",
                   borderRadius: 12,
                   color: "white",
                 }}
               />
-              <Area type="monotone" dataKey="followers" stroke="oklch(0.78 0.14 200)" strokeWidth={3} fill="url(#repArea)" />
+              <Area type="monotone" dataKey="followers" stroke="#00c2a8" strokeWidth={3} fill="url(#repArea)" />
+
             </AreaChart>
           </ResponsiveContainer>
         </div>
