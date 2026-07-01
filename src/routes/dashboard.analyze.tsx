@@ -16,7 +16,7 @@ import {
 import { ScoreRing } from "@/components/score-ring";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { sampleAnalysis, lockedIssues, loadingMessages } from "@/lib/mock";
+import { sampleAnalysis, lockedIssues, loadingSteps } from "@/lib/mock";
 
 export const Route = createFileRoute("/dashboard/analyze")({
   head: () => ({ meta: [{ title: "Analyze Profile — GrowthPilot" }] }),
