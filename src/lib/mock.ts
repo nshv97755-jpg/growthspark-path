@@ -164,14 +164,14 @@ export const reportData = {
   ],
 };
 
-export const loadingMessages = [
-  "Analyzing Profile...",
-  "Fetching Creator Data...",
-  "Calculating Growth Score...",
-  "Analyzing Engagement...",
-  "Detecting Niche...",
-  "Finding Growth Opportunities...",
-  "Almost Ready...",
+export const loadingSteps = [
+  { message: "Checking bio clarity...", icon: "🎯" },
+  { message: "Analyzing posting consistency...", icon: "📅" },
+  { message: "Evaluating engagement patterns...", icon: "💬" },
+  { message: "Detecting your niche...", icon: "🏷️" },
+  { message: "Finding growth opportunities...", icon: "🚀" },
+  { message: "Calculating your score...", icon: "📊" },
+  { message: "Preparing your report...", icon: "✨" },
 ];
 
 export const historyItems = [
