@@ -5,13 +5,8 @@ import { toast } from "sonner";
 import {
   Search,
   Sparkles,
-  Lock,
-  AlertTriangle,
   TrendingUp,
-  Users,
-  Image as ImageIcon,
   ArrowRight,
-  Check,
 } from "lucide-react";
 import { ScoreRing } from "@/components/score-ring";
 import { Button } from "@/components/ui/button";
