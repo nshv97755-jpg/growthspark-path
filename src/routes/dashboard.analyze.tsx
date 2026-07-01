@@ -111,17 +111,19 @@ function Idle({
 
 function Loading({ onDone }: { onDone: () => void }) {
   const [step, setStep] = useState(0);
+  const totalSteps = loadingSteps.length;
 
   useEffect(() => {
-    if (step >= loadingMessages.length) {
+    if (step >= totalSteps) {
       const t = setTimeout(onDone, 500);
       return () => clearTimeout(t);
     }
     const t = setTimeout(() => setStep((s) => s + 1), 850);
     return () => clearTimeout(t);
-  }, [step, onDone]);
+  }, [step, onDone, totalSteps]);
 
-  const progress = Math.min((step / loadingMessages.length) * 100, 100);
+  const progress = Math.min(((step + 1) / totalSteps) * 100, 100);
+  const currentStep = loadingSteps[Math.min(step, totalSteps - 1)];
 
   return (
     <motion.div
@@ -130,17 +132,17 @@ function Loading({ onDone }: { onDone: () => void }) {
       exit={{ opacity: 0 }}
       className="flex min-h-[60vh] flex-col items-center justify-center text-center"
     >
-      <div className="relative mb-8 flex h-28 w-28 items-center justify-center">
+      <div className="mb-8 flex h-24 w-24 items-center justify-center">
         <motion.span
-          className="absolute inset-0 rounded-full border-[3px] border-secondary"
-          style={{ borderTopColor: "#3b82f6" }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-        />
-        <Sparkles className="h-9 w-9 text-primary" />
+          className="text-5xl"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 1, repeat: Infinity }}
+        >
+          {currentStep.icon}
+        </motion.span>
       </div>
 
-      <div className="h-8 overflow-hidden">
+      <div className="h-7 overflow-hidden mb-6">
         <AnimatePresence mode="wait">
           <motion.p
             key={step}
@@ -148,21 +150,28 @@ function Loading({ onDone }: { onDone: () => void }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.3 }}
-            className="font-display text-xl font-semibold"
+            className="font-semibold text-card-foreground"
           >
-            {loadingMessages[Math.min(step, loadingMessages.length - 1)]}
+            {currentStep.message}
           </motion.p>
         </AnimatePresence>
       </div>
 
-      <div className="mt-6 h-1.5 w-full max-w-sm overflow-hidden rounded-full bg-secondary">
-        <motion.div
-          className="h-full rounded-full bg-brand"
-          animate={{ width: `${progress}%` }}
-          transition={{ duration: 0.6 }}
-        />
+      <div className="mb-3 w-full max-w-sm">
+        <div className="mb-2 flex justify-between text-sm">
+          <span className="text-muted-foreground">Step {step + 1} of {totalSteps}</span>
+          <span className="text-muted-foreground">{Math.round(progress)}%</span>
+        </div>
+        <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
+          <motion.div
+            className="h-full rounded-full bg-primary"
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
       </div>
-      <p className="mt-3 text-xs text-muted-foreground">This usually takes a few seconds</p>
+
+      <p className="text-xs text-muted-foreground">Usually takes 5-10 seconds</p>
     </motion.div>
   );
 }
