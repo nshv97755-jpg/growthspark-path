@@ -83,6 +83,10 @@ function Settings() {
       </Reveal>
 
       <Reveal>
+        <InstagramConnectCard />
+      </Reveal>
+
+      <Reveal>
         <div className="rounded-3xl glass p-6 sm:p-8">
           <h3 className="font-display text-lg font-semibold">Notifications</h3>
           <div className="mt-5 space-y-4">
