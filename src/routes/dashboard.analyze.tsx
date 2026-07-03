@@ -5,13 +5,18 @@ import { toast } from "sonner";
 import {
   Search,
   Sparkles,
+  Lock,
+  AlertTriangle,
   TrendingUp,
+  Users,
+  Image as ImageIcon,
   ArrowRight,
+  Check,
 } from "lucide-react";
 import { ScoreRing } from "@/components/score-ring";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { sampleAnalysis, lockedIssues, loadingSteps } from "@/lib/mock";
+import { sampleAnalysis, lockedIssues, loadingMessages } from "@/lib/mock";
 
 export const Route = createFileRoute("/dashboard/analyze")({
   head: () => ({ meta: [{ title: "Analyze Profile — GrowthPilot" }] }),
@@ -106,19 +111,17 @@ function Idle({
 
 function Loading({ onDone }: { onDone: () => void }) {
   const [step, setStep] = useState(0);
-  const totalSteps = loadingSteps.length;
 
   useEffect(() => {
-    if (step >= totalSteps) {
+    if (step >= loadingMessages.length) {
       const t = setTimeout(onDone, 500);
       return () => clearTimeout(t);
     }
     const t = setTimeout(() => setStep((s) => s + 1), 850);
     return () => clearTimeout(t);
-  }, [step, onDone, totalSteps]);
+  }, [step, onDone]);
 
-  const progress = Math.min(((step + 1) / totalSteps) * 100, 100);
-  const currentStep = loadingSteps[Math.min(step, totalSteps - 1)];
+  const progress = Math.min((step / loadingMessages.length) * 100, 100);
 
   return (
     <motion.div
@@ -127,17 +130,18 @@ function Loading({ onDone }: { onDone: () => void }) {
       exit={{ opacity: 0 }}
       className="flex min-h-[60vh] flex-col items-center justify-center text-center"
     >
-      <div className="mb-8 flex h-24 w-24 items-center justify-center">
+      <div className="relative mb-8 flex h-28 w-28 items-center justify-center">
+        <span className="absolute inset-0 rounded-full bg-brand opacity-30 blur-2xl animate-pulse-ring" />
         <motion.span
-          className="text-5xl"
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 1, repeat: Infinity }}
-        >
-          {currentStep.icon}
-        </motion.span>
+          className="absolute inset-0 rounded-full border-2 border-transparent"
+          style={{ borderTopColor: "#00c2a8", borderRightColor: "#c9a227" }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1.1, repeat: Infinity, ease: "linear" }}
+        />
+        <Sparkles className="h-9 w-9 text-accent" />
       </div>
 
-      <div className="h-7 overflow-hidden mb-6">
+      <div className="h-8 overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.p
             key={step}
@@ -145,28 +149,21 @@ function Loading({ onDone }: { onDone: () => void }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.3 }}
-            className="font-semibold text-card-foreground"
+            className="font-display text-xl font-semibold"
           >
-            {currentStep.message}
+            {loadingMessages[Math.min(step, loadingMessages.length - 1)]}
           </motion.p>
         </AnimatePresence>
       </div>
 
-      <div className="mb-3 w-full max-w-sm">
-        <div className="mb-2 flex justify-between text-sm">
-          <span className="text-muted-foreground">Step {step + 1} of {totalSteps}</span>
-          <span className="text-muted-foreground">{Math.round(progress)}%</span>
-        </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
-          <motion.div
-            className="h-full rounded-full bg-primary"
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.3 }}
-          />
-        </div>
+      <div className="mt-6 h-1.5 w-full max-w-sm overflow-hidden rounded-full bg-secondary">
+        <motion.div
+          className="h-full rounded-full bg-brand"
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.6 }}
+        />
       </div>
-
-      <p className="text-xs text-muted-foreground">Usually takes 5-10 seconds</p>
+      <p className="mt-3 text-xs text-muted-foreground">This usually takes a few seconds</p>
     </motion.div>
   );
 }
@@ -174,7 +171,8 @@ function Loading({ onDone }: { onDone: () => void }) {
 function Result({ username, onReset }: { username: string; onReset: () => void }) {
   const navigate = useNavigate();
   const handle = username.trim().replace(/^@/, "") || sampleAnalysis.username;
-  const a = { ...sampleAnalysis, username: handle, lockedIssues };
+  const a = { ...sampleAnalysis, username: handle };
+
 
   return (
     <motion.div
@@ -183,55 +181,73 @@ function Result({ username, onReset }: { username: string; onReset: () => void }
       exit={{ opacity: 0 }}
       className="space-y-6"
     >
-      {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold text-card-foreground">
-          Analysis for @{a.username}
-        </h2>
-        <Button variant="outline" size="sm" onClick={onReset}>
+        <h2 className="font-display text-2xl font-bold">Free Analysis</h2>
+        <Button variant="ghost" size="sm" onClick={onReset}>
           Analyze another
         </Button>
       </div>
 
-      {/* Profile info */}
-      <div className="flex items-center gap-4 rounded-lg border border-border bg-card p-4">
-        <img
-          src={a.avatar}
-          alt={a.username}
-          className="h-16 w-16 rounded-lg border border-border object-cover"
-        />
-        <div>
-          <p className="font-semibold text-card-foreground">@{a.username}</p>
-          <p className="text-sm text-muted-foreground">{a.niche}</p>
-          <div className="mt-2 flex gap-3 text-sm">
-            <span className="text-muted-foreground">{a.followers} followers</span>
-            <span className="text-muted-foreground">·</span>
-            <span className="text-muted-foreground">{a.posts} posts</span>
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Profile card */}
+        <div className="rounded-3xl glass p-6 lg:col-span-1">
+          <div className="flex items-center gap-4">
+            <img
+              src={a.avatar}
+              alt={a.username}
+              className="h-16 w-16 rounded-2xl border border-border"
+            />
+            <div>
+              <p className="font-display text-lg font-semibold">@{a.username}</p>
+              <span className="mt-1 inline-flex rounded-full bg-secondary px-2.5 py-0.5 text-xs text-muted-foreground">
+                {a.niche}
+              </span>
+            </div>
           </div>
+          <div className="mt-6 grid grid-cols-3 gap-2 text-center">
+            {[
+              { l: "Followers", v: a.followers },
+              { l: "Following", v: a.following },
+              { l: "Posts", v: a.posts },
+            ].map((s) => (
+              <div key={s.l} className="rounded-xl bg-secondary/50 py-3">
+                <p className="font-display text-lg font-bold">{s.v}</p>
+                <p className="text-xs text-muted-foreground">{s.l}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Score */}
+        <div className="flex flex-col items-center justify-center rounded-3xl glass-strong p-6 lg:col-span-1">
+          <ScoreRing value={a.growthScore} />
+          <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-success/15 px-3 py-1 text-sm font-medium text-success">
+            <TrendingUp className="h-4 w-4" /> {a.growthPotential} potential
+          </span>
+        </div>
+
+        {/* Quick stats */}
+        <div className="grid grid-cols-2 gap-4 lg:col-span-1">
+          <MiniStat icon={AlertTriangle} label="Issues Found" value={String(a.issuesFound)} tone="warning" />
+          <MiniStat icon={TrendingUp} label="Growth Potential" value={a.growthPotential} tone="success" />
+          <MiniStat icon={ImageIcon} label="Top Issue" value={a.topIssue} tone="default" />
+          <MiniStat icon={Users} label="Potential Gain" value={a.potentialGain} tone="accent" />
         </div>
       </div>
 
-      {/* Score section */}
-      <div className="flex flex-col items-center justify-center gap-6 rounded-lg border border-border bg-card p-8">
-        <ScoreRing value={a.growthScore} />
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-success/15 px-3 py-1 text-sm font-medium text-success">
-          <TrendingUp className="h-4 w-4" /> {a.growthPotential} potential
-        </span>
-      </div>
-
-      {/* Category breakdown */}
-      <div className="rounded-lg border border-border bg-card p-6">
-        <h3 className="font-semibold text-card-foreground mb-4">Category Breakdown</h3>
-        <div className="space-y-4">
+      {/* Category scores */}
+      <div className="rounded-3xl glass p-6">
+        <h3 className="font-display text-lg font-semibold">Category scores</h3>
+        <div className="mt-5 grid gap-5 sm:grid-cols-2">
           {a.categories.map((c, i) => (
             <div key={c.label}>
-              <div className="flex items-center justify-between text-sm mb-2">
-                <span className="font-medium text-card-foreground">{c.label}</span>
+              <div className="flex items-center justify-between text-sm">
+                <span className="font-medium">{c.label}</span>
                 <span className="text-muted-foreground">{c.value}/100</span>
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-secondary">
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary">
                 <motion.div
-                  className="h-full rounded-full bg-primary"
+                  className="h-full rounded-full bg-brand"
                   initial={{ width: 0 }}
                   animate={{ width: `${c.value}%` }}
                   transition={{ duration: 1, delay: 0.2 + i * 0.1 }}
@@ -243,44 +259,98 @@ function Result({ username, onReset }: { username: string; onReset: () => void }
         </div>
       </div>
 
-      {/* Growth problems found - NOW FULLY VISIBLE */}
-      <div className="rounded-lg border border-border bg-card p-6">
-        <h3 className="font-semibold text-card-foreground mb-4">
-          {a.issuesFound} Growth Problems Found
-        </h3>
-        <p className="text-sm text-muted-foreground mb-4">
-          These are holding you back. Solutions are in the full report.
-        </p>
+      {/* Locked issues */}
+      <div className="relative overflow-hidden rounded-3xl glass-strong p-6">
+        <div className="flex items-center justify-between">
+          <h3 className="font-display text-lg font-semibold">
+            {a.issuesFound} Growth Problems Found
+          </h3>
+          <span className="flex items-center gap-1.5 text-sm text-warning">
+            <Lock className="h-4 w-4" /> Locked
+          </span>
+        </div>
 
-        <div className="space-y-2">
-          {a.lockedIssues.map((issue, i) => (
-            <div
-              key={issue}
-              className="flex items-start gap-3 rounded-lg bg-secondary/50 p-3"
-            >
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-                {i + 1}
-              </span>
-              <span className="text-sm text-card-foreground">{issue}</span>
-            </div>
-          ))}
+        <div className="relative mt-5 space-y-3">
+          {lockedIssues.map((issue, i) => {
+            const revealed = i === 0;
+            return (
+              <div
+                key={issue}
+                className="flex items-center justify-between rounded-xl bg-secondary/50 px-4 py-3"
+              >
+                <span className="flex items-center gap-3">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-background text-xs font-semibold text-muted-foreground">
+                    {i + 1}
+                  </span>
+                  <span className={`text-sm ${revealed ? "" : "blur-sm select-none"}`}>
+                    {revealed ? issue : "███████ ████ ██████"}
+                  </span>
+                </span>
+                {revealed ? (
+                  <span className="rounded-full bg-warning/15 px-2 py-0.5 text-xs text-warning">
+                    Top issue
+                  </span>
+                ) : (
+                  <Lock className="h-4 w-4 text-muted-foreground" />
+                )}
+              </div>
+            );
+          })}
+
+          {/* fade + CTA overlay */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-card to-transparent" />
+        </div>
+
+        <div className="relative mt-6 rounded-2xl bg-brand p-6 text-center">
+          <h4 className="font-display text-xl font-bold text-primary-foreground">
+            Unlock all {a.issuesFound} fixes + your full growth playbook
+          </h4>
+          <p className="mx-auto mt-2 max-w-md text-sm text-primary-foreground/80">
+            Get the complete report: why you're not growing, 30 content ideas, viral captions, a
+            7-day plan, and a 6-month forecast.
+          </p>
+          <ul className="mx-auto mt-4 flex max-w-md flex-wrap justify-center gap-x-5 gap-y-1.5 text-sm text-primary-foreground/90">
+            {["Top 5 mistakes", "30 content ideas", "7-day plan", "Growth forecast"].map((f) => (
+              <li key={f} className="flex items-center gap-1.5">
+                <Check className="h-4 w-4" /> {f}
+              </li>
+            ))}
+          </ul>
+          <Button
+            size="xl"
+            className="mt-6 bg-background text-foreground hover:bg-background/90"
+            onClick={() => navigate({ to: "/dashboard/report" })}
+          >
+            Generate Full Report <ArrowRight className="ml-1 h-4 w-4" />
+          </Button>
         </div>
       </div>
-
-      {/* CTA */}
-      <div className="rounded-lg bg-primary/5 border border-primary/20 p-6 text-center">
-        <h4 className="font-semibold text-primary">Unlock the full diagnosis</h4>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Get detailed fixes, 30 content ideas, captions, and a 7-day action plan.
-        </p>
-        <Button
-          size="lg"
-          className="mt-4 bg-primary text-white hover:bg-[#2563eb]"
-          onClick={() => navigate({ to: "/dashboard/report" })}
-        >
-          See full report <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
-      </div>
     </motion.div>
+  );
+}
+
+function MiniStat({
+  icon: Icon,
+  label,
+  value,
+  tone,
+}: {
+  icon: typeof Users;
+  label: string;
+  value: string;
+  tone: "warning" | "success" | "accent" | "default";
+}) {
+  const toneClass = {
+    warning: "text-warning",
+    success: "text-success",
+    accent: "text-accent",
+    default: "text-foreground",
+  }[tone];
+  return (
+    <div className="rounded-2xl glass p-4">
+      <Icon className={`h-5 w-5 ${toneClass}`} />
+      <p className="mt-3 font-display text-xl font-bold leading-tight">{value}</p>
+      <p className="text-xs text-muted-foreground">{label}</p>
+    </div>
   );
 }

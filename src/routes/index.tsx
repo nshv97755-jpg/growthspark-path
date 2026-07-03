@@ -2,12 +2,21 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import {
   ArrowRight,
+  Play,
+  Sparkles,
+  Search,
+  LineChart,
+  Lock,
   Zap,
   Target,
-  Lightbulb,
+  Brain,
   Check,
+  Star,
+  TrendingUp,
 } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
+import { AuroraBackground } from "@/components/aurora-background";
+import { Reveal } from "@/components/reveal";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,6 +45,76 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
+const features = [
+  {
+    icon: Brain,
+    title: "Deep Profile Diagnosis",
+    desc: "AI reads your bio, content cadence, and engagement patterns to find what's silently capping your reach.",
+  },
+  {
+    icon: LineChart,
+    title: "Growth Score Engine",
+    desc: "A single, honest number that tells you exactly where you stand against your niche benchmarks.",
+  },
+  {
+    icon: Target,
+    title: "Personalized Strategy",
+    desc: "No generic tips. A plan built around your niche, audience, and the formats that actually work for you.",
+  },
+  {
+    icon: Zap,
+    title: "30 Content Ideas",
+    desc: "Ready-to-shoot ideas, viral caption hooks, and hashtag sets generated for your exact audience.",
+  },
+  {
+    icon: TrendingUp,
+    title: "6-Month Forecast",
+    desc: "See the trajectory your account can hit once you fix the issues holding it back.",
+  },
+  {
+    icon: Search,
+    title: "Competitor Intelligence",
+    desc: "Learn what the creators just ahead of you are doing differently — and how to close the gap.",
+  },
+];
+
+const pricing = [
+  {
+    name: "Free",
+    price: "$0",
+    period: "forever",
+    desc: "See your score and what's holding you back.",
+    cta: "Analyze for free",
+    highlight: false,
+    features: ["Growth Score", "Category breakdown", "Issues found (locked details)", "1 analysis / day"],
+  },
+  {
+    name: "Pro",
+    price: "$29",
+    period: "/month",
+    desc: "The full diagnosis and your complete growth playbook.",
+    cta: "Start growing",
+    highlight: true,
+    features: [
+      "Everything in Free",
+      "Full premium report",
+      "30 content ideas + captions",
+      "7-day growth plan",
+      "Growth forecast & competitors",
+      "Export PDF & history",
+    ],
+  },
+  {
+    name: "Studio",
+    price: "$79",
+    period: "/month",
+    desc: "For agencies managing multiple creators.",
+    cta: "Contact sales",
+    highlight: false,
+    features: ["Everything in Pro", "Up to 15 profiles", "Compare reports", "Priority AI queue", "Team workspace"],
+  },
+];
+
 const testimonials = [
   {
     quote:
@@ -57,7 +136,7 @@ const testimonials = [
   },
 ];
 
-const faqItems = [
+const faqs = [
   {
     q: "How does the analysis work?",
     a: "Our AI evaluates your public profile signals — bio, posting cadence, engagement patterns, niche fit, and format mix — then benchmarks them against top performers in your category to surface what's holding you back.",
@@ -86,278 +165,236 @@ function Landing() {
       <SiteNav />
 
       {/* Hero */}
-      <section className="relative px-4 py-32 sm:py-40 bg-white">
-        <div className="mx-auto max-w-4xl text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl sm:text-6xl font-semibold leading-tight text-card-foreground"
-          >
-            See exactly what's holding your growth back
-          </motion.h1>
+      <section className="relative px-4 pt-40 pb-24 text-center sm:pt-48">
+        <AuroraBackground />
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-border glass px-4 py-1.5 text-xs font-medium text-muted-foreground"
+        >
+          <Sparkles className="h-3.5 w-3.5 text-accent" />
+          AI growth strategist for creators
+        </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto"
-          >
-            AI analyzes your Instagram profile and finds the specific issues tanking your growth. Get actionable insights in 30 seconds.
-          </motion.p>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.05 }}
+          className="mx-auto max-w-4xl text-balance font-display text-5xl font-bold leading-[1.05] sm:text-7xl"
+        >
+          Discover Exactly Why <br className="hidden sm:block" />
+          <span className="text-gradient">You're Not Growing.</span>
+        </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="mt-8 flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <Button asChild variant="hero" size="lg">
-              <Link to="/dashboard/analyze">
-                See your growth score <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </motion.div>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="mx-auto mt-6 max-w-2xl text-balance text-lg text-muted-foreground"
+        >
+          AI analyzes your creator profile and gives you a personalized growth strategy — so you
+          stop guessing and start scaling.
+        </motion.p>
 
-          <p className="mt-4 text-sm text-muted-foreground">
-            Free analysis. No credit card required.
-          </p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.25 }}
+          className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
+        >
+          <Button asChild variant="hero" size="xl">
+            <Link to="/dashboard/analyze">
+              Analyze Profile <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
+          </Button>
+          <Button asChild variant="glass" size="xl">
+            <a href="#preview">
+              <Play className="mr-1 h-4 w-4" /> View Demo
+            </a>
+          </Button>
+        </motion.div>
+
+        <p className="mt-5 text-xs text-muted-foreground">
+          No credit card required · Free Growth Score in 30 seconds
+        </p>
+      </section>
+
+      {/* Dashboard Preview */}
+      <section id="preview" className="relative px-4 pb-28">
+        <Reveal className="mx-auto max-w-5xl">
+          <div className="relative rounded-3xl glass-strong p-2 shadow-card">
+            <div className="absolute -inset-px -z-10 rounded-3xl bg-brand opacity-30 blur-2xl" />
+            <DashboardPreview />
+          </div>
+        </Reveal>
       </section>
 
       {/* Features */}
-      <section id="features" className="px-4 py-24 sm:py-32 bg-background">
-        <div className="mx-auto max-w-4xl">
-          <div className="text-center mb-20">
-            <h2 className="text-3xl sm:text-4xl font-semibold text-card-foreground">
-              How it works
-            </h2>
-          </div>
+      <section id="features" className="relative px-4 py-24">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <p className="text-sm font-medium uppercase tracking-widest text-accent">Features</p>
+          <h2 className="mt-3 font-display text-4xl font-bold sm:text-5xl">
+            Strategy, not surface-level tips
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Every insight is generated for your specific account — the same way a $5k consultant
+            would audit it.
+          </p>
+        </Reveal>
 
-          <div className="space-y-24">
-            {/* Feature 1 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <Zap className="h-6 w-6 text-primary" strokeWidth={1.5} />
-                </div>
-                <h3 className="mt-6 text-2xl font-semibold text-card-foreground">
-                  Deep profile diagnosis
-                </h3>
-                <p className="mt-3 text-base text-muted-foreground leading-relaxed">
-                  We analyze your bio, captions, posting patterns, engagement, and niche to identify exactly what's holding you back. No guessing.
-                </p>
+        <div className="mx-auto mt-14 grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {features.map((f, i) => (
+            <Reveal key={f.title} delay={i * 0.05}>
+              <div className="group h-full rounded-2xl glass p-6 transition-all hover:-translate-y-1 hover:border-primary/40">
+                <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand shadow-glow">
+                  <f.icon className="h-5 w-5 text-primary-foreground" />
+                </span>
+                <h3 className="font-display text-lg font-semibold">{f.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
               </div>
-              <div className="hidden md:block" />
-            </div>
-
-            {/* Feature 2 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div className="hidden md:block" />
-              <div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <Target className="h-6 w-6 text-primary" strokeWidth={1.5} />
-                </div>
-                <h3 className="mt-6 text-2xl font-semibold text-card-foreground">
-                  Personalized growth score
-                </h3>
-                <p className="mt-3 text-base text-muted-foreground leading-relaxed">
-                  Get a 0-100 score based on your specific niche and audience. See exactly where you rank and what to fix first.
-                </p>
-              </div>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <Lightbulb className="h-6 w-6 text-primary" strokeWidth={1.5} />
-                </div>
-                <h3 className="mt-6 text-2xl font-semibold text-card-foreground">
-                  Actionable growth plan
-                </h3>
-                <p className="mt-3 text-base text-muted-foreground leading-relaxed">
-                  Get 30 viral content ideas, captions, hashtags, and a 7-day action plan. Stop guessing what to post.
-                </p>
-              </div>
-              <div className="hidden md:block" />
-            </div>
-          </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="px-4 py-24 sm:py-32 bg-white">
-        <div className="mx-auto max-w-5xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-semibold text-card-foreground">
-              Simple pricing
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              Start free. Upgrade whenever you need more.
-            </p>
-          </div>
+      <section id="pricing" className="relative px-4 py-24">
+        <AuroraBackground className="opacity-50" />
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <p className="text-sm font-medium uppercase tracking-widest text-accent">Pricing</p>
+          <h2 className="mt-3 font-display text-4xl font-bold sm:text-5xl">Simple, honest pricing</h2>
+          <p className="mt-4 text-muted-foreground">
+            Start free. Upgrade when you're ready to unlock the full playbook.
+          </p>
+        </Reveal>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="pb-4 pr-4 font-semibold text-card-foreground text-base">Feature</th>
-                  <th className="pb-4 px-4 text-center font-semibold text-card-foreground text-base">Free</th>
-                  <th className="pb-4 px-4 text-center font-semibold text-card-foreground text-base bg-primary/5 rounded-t-lg">
-                    Pro
-                    <span className="ml-2 inline-block rounded-full bg-primary text-white text-xs px-2 py-0.5">
-                      Most popular
-                    </span>
-                  </th>
-                  <th className="pb-4 pl-4 text-center font-semibold text-card-foreground text-base">Studio</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-border">
-                  <td className="py-3 pr-4 text-muted-foreground">Growth Score</td>
-                  <td className="py-3 px-4 text-center">
-                    <Check className="h-5 w-5 text-success mx-auto" />
-                  </td>
-                  <td className="py-3 px-4 text-center bg-primary/5">
-                    <Check className="h-5 w-5 text-success mx-auto" />
-                  </td>
-                  <td className="py-3 pl-4 text-center">
-                    <Check className="h-5 w-5 text-success mx-auto" />
-                  </td>
-                </tr>
-                <tr className="border-b border-border">
-                  <td className="py-3 pr-4 text-muted-foreground">Full Premium Report</td>
-                  <td className="py-3 px-4 text-center text-muted-foreground">—</td>
-                  <td className="py-3 px-4 text-center bg-primary/5">
-                    <Check className="h-5 w-5 text-success mx-auto" />
-                  </td>
-                  <td className="py-3 pl-4 text-center">
-                    <Check className="h-5 w-5 text-success mx-auto" />
-                  </td>
-                </tr>
-                <tr className="border-b border-border">
-                  <td className="py-3 pr-4 text-muted-foreground">Content Ideas & Captions</td>
-                  <td className="py-3 px-4 text-center text-muted-foreground">—</td>
-                  <td className="py-3 px-4 text-center bg-primary/5">
-                    <Check className="h-5 w-5 text-success mx-auto" />
-                  </td>
-                  <td className="py-3 pl-4 text-center">
-                    <Check className="h-5 w-5 text-success mx-auto" />
-                  </td>
-                </tr>
-                <tr className="border-b border-border">
-                  <td className="py-3 pr-4 text-muted-foreground">Multiple profiles</td>
-                  <td className="py-3 px-4 text-center text-muted-foreground">—</td>
-                  <td className="py-3 px-4 text-center bg-primary/5 text-muted-foreground">—</td>
-                  <td className="py-3 pl-4 text-center">
-                    <Check className="h-5 w-5 text-success mx-auto" />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="pt-6 pr-4" />
-                  <td className="pt-6 px-4">
-                    <Button asChild variant="outline" size="lg" className="w-full">
-                      <Link to="/dashboard/analyze">Get started</Link>
-                    </Button>
-                  </td>
-                  <td className="pt-6 px-4 bg-primary/5">
-                    <Button asChild variant="hero" size="lg" className="w-full">
-                      <Link to="/dashboard/analyze">Start free</Link>
-                    </Button>
-                  </td>
-                  <td className="pt-6 pl-4">
-                    <Button asChild variant="outline" size="lg" className="w-full">
-                      <a href="mailto:sales@growthpilot.app">Contact sales</a>
-                    </Button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div className="mx-auto mt-14 grid max-w-5xl gap-6 lg:grid-cols-3">
+          {pricing.map((p, i) => (
+            <Reveal key={p.name} delay={i * 0.07}>
+              <div
+                className={`relative flex h-full flex-col rounded-3xl p-7 ${
+                  p.highlight
+                    ? "glass-strong glow"
+                    : "glass"
+                }`}
+              >
+                {p.highlight && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand px-3 py-1 text-xs font-semibold text-primary-foreground">
+                    Most popular
+                  </span>
+                )}
+                <h3 className="font-display text-xl font-semibold">{p.name}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{p.desc}</p>
+                <div className="mt-5 flex items-end gap-1">
+                  <span className="font-display text-4xl font-bold">{p.price}</span>
+                  <span className="mb-1 text-sm text-muted-foreground">{p.period}</span>
+                </div>
+                <ul className="mt-6 space-y-3 text-sm">
+                  {p.features.map((feat) => (
+                    <li key={feat} className="flex items-start gap-2.5 text-muted-foreground">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                      {feat}
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  asChild
+                  variant={p.highlight ? "hero" : "glass"}
+                  size="lg"
+                  className="mt-7 w-full"
+                >
+                  <Link to="/auth">{p.cta}</Link>
+                </Button>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 
       {/* Testimonials */}
-      <section id="testimonials" className="relative px-4 py-24 bg-background">
-        <div className="mx-auto max-w-2xl text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-card-foreground">
+      <section id="testimonials" className="relative px-4 py-24">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <p className="text-sm font-medium uppercase tracking-widest text-accent">Loved by creators</p>
+          <h2 className="mt-3 font-display text-4xl font-bold sm:text-5xl">
             Growth you can actually feel
           </h2>
-        </div>
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((t, i) => (
-              <motion.figure
-                key={t.name}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="flex flex-col rounded-lg border border-border bg-card p-6 shadow-sm"
-              >
-                <blockquote className="flex-1 text-sm leading-relaxed text-card-foreground">
+        </Reveal>
+        <div className="mx-auto mt-14 grid max-w-6xl gap-5 md:grid-cols-3">
+          {testimonials.map((t, i) => (
+            <Reveal key={t.name} delay={i * 0.07}>
+              <figure className="flex h-full flex-col rounded-2xl glass p-6">
+                <div className="mb-4 flex gap-0.5 text-warning">
+                  {Array.from({ length: 5 }).map((_, s) => (
+                    <Star key={s} className="h-4 w-4 fill-current" />
+                  ))}
+                </div>
+                <blockquote className="flex-1 text-sm leading-relaxed text-foreground/90">
                   "{t.quote}"
                 </blockquote>
-                <figcaption className="mt-4 flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                <figcaption className="mt-5 flex items-center gap-3">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-xs font-semibold text-primary-foreground">
                     {t.name[0]}
                   </span>
                   <span>
-                    <span className="block text-sm font-medium text-card-foreground">{t.name}</span>
+                    <span className="block text-sm font-medium">{t.name}</span>
                     <span className="block text-xs text-muted-foreground">{t.role}</span>
                   </span>
                 </figcaption>
-              </motion.figure>
-            ))}
-          </div>
+              </figure>
+            </Reveal>
+          ))}
         </div>
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="relative px-4 py-24 bg-white">
-        <div className="mx-auto max-w-3xl">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-semibold text-card-foreground">
+      <section id="faq" className="relative px-4 py-24">
+        <Reveal className="mx-auto max-w-3xl">
+          <div className="text-center">
+            <p className="text-sm font-medium uppercase tracking-widest text-accent">FAQ</p>
+            <h2 className="mt-3 font-display text-4xl font-bold sm:text-5xl">
               Questions, answered
             </h2>
           </div>
-          <Accordion type="single" collapsible className="w-full space-y-3">
-            {faqItems.map((item, i) => (
+          <Accordion type="single" collapsible className="mt-10 w-full">
+            {faqs.map((f, i) => (
               <AccordionItem
                 key={i}
                 value={`item-${i}`}
-                className="border border-border rounded-lg px-4 py-0"
+                className="mb-3 rounded-2xl glass px-5 last:mb-0"
               >
-                <AccordionTrigger className="text-left font-semibold text-card-foreground hover:text-primary transition-colors py-4">
-                  {item.q}
+                <AccordionTrigger className="text-left font-medium hover:no-underline">
+                  {f.q}
                 </AccordionTrigger>
-                <AccordionContent className="pb-4 text-muted-foreground text-sm leading-relaxed">
-                  {item.a}
-                </AccordionContent>
+                <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
-        </div>
+        </Reveal>
       </section>
 
       {/* Final CTA */}
-      <section className="relative px-4 py-24 bg-background">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="mx-auto max-w-2xl text-3xl sm:text-4xl font-semibold text-card-foreground">
-            Your audience is waiting. Find out what's in the way.
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Run a free analysis and get your Growth Score in under a minute.
-          </p>
-          <Button asChild variant="hero" size="lg" className="mt-8">
-            <Link to="/dashboard/analyze">
-              See your growth score <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
+      <section className="relative px-4 py-20">
+        <Reveal className="mx-auto max-w-4xl">
+          <div className="relative overflow-hidden rounded-3xl glass-strong p-12 text-center shadow-card">
+            <AuroraBackground />
+            <h2 className="mx-auto max-w-2xl font-display text-4xl font-bold sm:text-5xl">
+              Your audience is waiting. Find out what's in the way.
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+              Run a free analysis and get your Growth Score in under a minute.
+            </p>
+            <Button asChild variant="hero" size="xl" className="mt-8">
+              <Link to="/dashboard/analyze">
+                Analyze Profile <ArrowRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </Reveal>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border px-4 py-12 bg-white">
+      <footer className="border-t border-border px-4 py-12">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
           <Logo />
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
@@ -369,6 +406,67 @@ function Landing() {
           <p className="text-xs text-muted-foreground">© 2026 GrowthPilot. All rights reserved.</p>
         </div>
       </footer>
+    </div>
+  );
+}
+
+function DashboardPreview() {
+  return (
+    <div className="overflow-hidden rounded-2xl bg-background/80">
+      <div className="flex items-center gap-2 border-b border-border px-4 py-3">
+        <span className="h-3 w-3 rounded-full bg-destructive/70" />
+        <span className="h-3 w-3 rounded-full bg-warning/70" />
+        <span className="h-3 w-3 rounded-full bg-success/70" />
+        <span className="ml-3 text-xs text-muted-foreground">GrowthPilot · @creatorname</span>
+      </div>
+      <div className="grid gap-4 p-5 sm:grid-cols-3">
+        <div className="rounded-xl glass p-5 sm:col-span-1">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">Growth Score</p>
+          <p className="mt-2 font-display text-5xl font-bold text-gradient">72</p>
+          <p className="mt-1 text-xs text-muted-foreground">/ 100 · High potential</p>
+          <div className="mt-4 space-y-2.5">
+            {[
+              { l: "Followers", v: 78 },
+              { l: "Engagement", v: 54 },
+              { l: "Niche fit", v: 81 },
+            ].map((b) => (
+              <div key={b.l}>
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>{b.l}</span>
+                  <span>{b.v}</span>
+                </div>
+                <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-secondary">
+                  <motion.div
+                    className="h-full rounded-full bg-brand"
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${b.v}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.2 }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="rounded-xl glass p-5 sm:col-span-2">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">6-Month Forecast</p>
+          <div className="mt-4 flex h-40 items-end gap-2">
+            {[48, 53, 61, 72, 88, 104, 126].map((h, i) => (
+              <motion.div
+                key={i}
+                className="flex-1 rounded-t-md bg-brand"
+                initial={{ height: 0 }}
+                whileInView={{ height: `${(h / 126) * 100}%` }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: i * 0.08 }}
+              />
+            ))}
+          </div>
+          <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
+            <Lock className="h-3.5 w-3.5" /> 7 growth problems found — unlock the fixes
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
