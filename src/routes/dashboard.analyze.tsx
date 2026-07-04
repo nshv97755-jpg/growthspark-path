@@ -12,10 +12,20 @@ import {
   Image as ImageIcon,
   ArrowRight,
   Check,
+  Instagram,
+  Loader2,
 } from "lucide-react";
 import { ScoreRing } from "@/components/score-ring";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { useInstagramConnection } from "@/hooks/use-instagram-connection";
 import { sampleAnalysis, lockedIssues, loadingMessages } from "@/lib/mock";
 
 export const Route = createFileRoute("/dashboard/analyze")({
@@ -28,6 +38,28 @@ type Stage = "idle" | "loading" | "result";
 function Analyze() {
   const [stage, setStage] = useState<Stage>("idle");
   const [username, setUsername] = useState("");
+  const [connectOpen, setConnectOpen] = useState(false);
+  const { status, connect } = useInstagramConnection();
+
+  // Attempt to start analysis: gate on an Instagram connection.
+  const requestStart = () => {
+    if (status === "connected") {
+      setStage("loading");
+    } else {
+      setConnectOpen(true);
+    }
+  };
+
+  const handleConnect = async () => {
+    try {
+      const c = await connect();
+      toast.success(`Instagram connected — @${c.username}`);
+      setConnectOpen(false);
+      setStage("loading");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Couldn't connect Instagram");
+    }
+  };
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -37,7 +69,7 @@ function Analyze() {
             key="idle"
             username={username}
             setUsername={setUsername}
-            onStart={() => setStage("loading")}
+            onStart={requestStart}
           />
         )}
         {stage === "loading" && <Loading key="loading" onDone={() => setStage("result")} />}
@@ -45,6 +77,39 @@ function Analyze() {
           <Result key="result" username={username} onReset={() => setStage("idle")} />
         )}
       </AnimatePresence>
+
+      <Dialog open={connectOpen} onOpenChange={setConnectOpen}>
+        <DialogContent className="glass-strong sm:max-w-md">
+          <DialogHeader className="items-center text-center">
+            <span className="mb-2 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand text-primary-foreground">
+              <Instagram className="h-7 w-7" />
+            </span>
+            <DialogTitle className="font-display text-xl">Connect Instagram</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Connect your Instagram account to generate your personalized growth report.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-2 flex justify-center">
+            <Button
+              type="button"
+              variant="hero"
+              size="lg"
+              disabled={status === "connecting"}
+              onClick={handleConnect}
+            >
+              {status === "connecting" ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" /> Connecting…
+                </>
+              ) : (
+                <>
+                  <Instagram className="h-4 w-4" /> Connect Instagram
+                </>
+              )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
