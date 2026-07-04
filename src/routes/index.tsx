@@ -307,7 +307,7 @@ function Landing() {
                   asChild
                   variant={p.highlight ? "hero" : "glass"}
                   size="lg"
-                  className="mt-3 w-full"
+                  className={`w-full ${p.highlight ? "mt-3" : "mt-7"}`}
                 >
                   <Link to="/auth">{p.cta}</Link>
                 </Button>
