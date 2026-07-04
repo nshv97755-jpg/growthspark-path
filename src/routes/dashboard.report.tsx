@@ -16,6 +16,7 @@ import {
   Quote,
   TrendingUp,
   Sparkles,
+  Rocket,
 } from "lucide-react";
 import {
   Area,
@@ -29,6 +30,13 @@ import {
 } from "recharts";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { reportData, sampleAnalysis } from "@/lib/mock";
 
@@ -94,6 +102,7 @@ function ReportPage() {
 }
 
 function ReportContent() {
+  const [pdfOpen, setPdfOpen] = useState(false);
   return (
     <div className="mx-auto max-w-5xl space-y-8">
       {/* Header */}
@@ -113,7 +122,7 @@ function ReportContent() {
             Your complete, personalized playbook to break the plateau and scale.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
-            <Button variant="hero" size="sm" onClick={() => toast.success("Generating your PDF…")}>
+            <Button variant="hero" size="sm" onClick={() => setPdfOpen(true)}>
               <Download className="mr-1 h-4 w-4" /> Export PDF
             </Button>
             <Button variant="glass" size="sm" onClick={() => toast.success("Report saved to your library")}>
@@ -127,6 +136,31 @@ function ReportContent() {
           </div>
         </div>
       </Reveal>
+
+      <Dialog open={pdfOpen} onOpenChange={setPdfOpen}>
+        <DialogContent className="glass-strong border-white/[0.07] sm:rounded-3xl text-center">
+          <DialogHeader className="items-center gap-4">
+            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand shadow-glow">
+              <Rocket className="h-6 w-6 text-primary-foreground" />
+            </span>
+            <div className="space-y-2">
+              <DialogTitle className="font-display text-2xl font-bold">
+                🚀 Coming Soon
+              </DialogTitle>
+              <DialogDescription className="text-base text-muted-foreground max-w-xs mx-auto">
+                PDF Export will be available very soon.
+                <br />
+                We're putting the finishing touches on this feature.
+              </DialogDescription>
+            </div>
+          </DialogHeader>
+          <div className="flex justify-center pt-2">
+            <Button variant="hero" size="sm" onClick={() => setPdfOpen(false)}>
+              OK
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Why not growing */}
       <Section icon={Lightbulb} title="Why You're Not Growing">
