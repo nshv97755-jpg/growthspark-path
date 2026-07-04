@@ -16,6 +16,7 @@ import {
   Quote,
   TrendingUp,
   Sparkles,
+  Rocket,
 } from "lucide-react";
 import {
   Area,
@@ -29,6 +30,13 @@ import {
 } from "recharts";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { reportData, sampleAnalysis } from "@/lib/mock";
 
