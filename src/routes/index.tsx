@@ -298,11 +298,16 @@ function Landing() {
                     </li>
                   ))}
                 </ul>
+                {p.highlight && (
+                  <p className="mt-5 text-center text-xs font-medium tracking-wide text-accent">
+                    💎 Buy Pro. Get More Aura.
+                  </p>
+                )}
                 <Button
                   asChild
                   variant={p.highlight ? "hero" : "glass"}
                   size="lg"
-                  className="mt-7 w-full"
+                  className={`w-full ${p.highlight ? "mt-3" : "mt-7"}`}
                 >
                   <Link to="/auth">{p.cta}</Link>
                 </Button>
