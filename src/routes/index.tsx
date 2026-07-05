@@ -81,37 +81,51 @@ const features = [
 const pricing = [
   {
     name: "Free",
-    price: "$0",
-    period: "forever",
+    price: "₹0",
+    period: "",
     desc: "See your score and what's holding you back.",
     cta: "Analyze for free",
     highlight: false,
-    features: ["Growth Score", "Category breakdown", "Issues found (locked details)", "1 analysis / day"],
+    badge: null,
+    tagline: null,
+    includes: null,
+    features: ["1 AI Report per week", "Basic AI Analysis", "Growth Score", "Limited Report Preview", "Instagram Connection"],
   },
   {
     name: "Pro",
-    price: "$29",
+    price: "₹199",
     period: "/month",
     desc: "The full diagnosis and your complete growth playbook.",
     cta: "Start growing",
     highlight: true,
-    features: [
-      "Everything in Free",
-      "Full premium report",
-      "30 content ideas + captions",
-      "7-day growth plan",
-      "Growth forecast & competitors",
-      "Export PDF & history",
-    ],
+    badge: "Most popular",
+    tagline: "💎 Buy Pro. Get More Aura.",
+    includes: null,
+    features: ["Unlimited AI Reports", "Full AI Report", "PDF Export", "AI Bio Suggestions", "AI Caption Suggestions", "AI Hashtag Suggestions", "Report History", "Priority Processing"],
   },
   {
-    name: "Studio",
-    price: "$79",
+    name: "God Mode",
+    price: "₹399",
     period: "/month",
-    desc: "For agencies managing multiple creators.",
-    cta: "Contact sales",
+    desc: "Own the algorithm.",
+    cta: "Go God Mode",
     highlight: false,
-    features: ["Everything in Pro", "Up to 15 profiles", "Compare reports", "Priority AI queue", "Team workspace"],
+    badge: null,
+    tagline: "💀 Aura is cute. God Mode owns the algorithm.",
+    includes: "Everything in Pro, plus:",
+    features: ["Competitor Analysis", "Viral Hook Generator", "AI Reel Script Generator", "30-Day Content Calendar", "AI Growth Roadmap", "Fastest AI Processing", "Early Access to New Features", "Future Premium Features Included"],
+  },
+  {
+    name: "Founder's Pass",
+    price: "₹1,599",
+    period: "One-Time",
+    desc: "Own it forever.",
+    cta: "Claim Founder",
+    highlight: false,
+    badge: "🔥 Limited to First 100 Users",
+    tagline: "🗿 They rent. You own.",
+    includes: "Everything in God Mode, plus:",
+    features: ["Lifetime Access", "Lifetime Updates", "Founder Badge", "Priority Support", "Early Access to Every Future Feature"],
   },
 ];
 
@@ -269,7 +283,7 @@ function Landing() {
           </p>
         </Reveal>
 
-        <div className="mx-auto mt-14 grid max-w-5xl gap-6 lg:grid-cols-3">
+        <div className="mx-auto mt-14 grid max-w-7xl gap-6 lg:grid-cols-4">
           {pricing.map((p, i) => (
             <Reveal key={p.name} delay={i * 0.07}>
               <div
@@ -279,9 +293,9 @@ function Landing() {
                     : "glass"
                 }`}
               >
-                {p.highlight && (
+                {p.badge && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand px-3 py-1 text-xs font-semibold text-primary-foreground">
-                    Most popular
+                    {p.badge}
                   </span>
                 )}
                 <h3 className="font-display text-xl font-semibold">{p.name}</h3>
@@ -291,6 +305,11 @@ function Landing() {
                   <span className="mb-1 text-sm text-muted-foreground">{p.period}</span>
                 </div>
                 <ul className="mt-6 space-y-3 text-sm">
+                  {p.includes && (
+                    <li className="text-xs font-medium uppercase tracking-wider text-foreground/80">
+                      {p.includes}
+                    </li>
+                  )}
                   {p.features.map((feat) => (
                     <li key={feat} className="flex items-start gap-2.5 text-muted-foreground">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />
@@ -298,16 +317,16 @@ function Landing() {
                     </li>
                   ))}
                 </ul>
-                {p.highlight && (
+                {p.tagline && (
                   <p className="mt-5 text-center text-xs font-medium tracking-wide text-accent">
-                    💎 Buy Pro. Get More Aura.
+                    {p.tagline}
                   </p>
                 )}
                 <Button
                   asChild
                   variant={p.highlight ? "hero" : "glass"}
                   size="lg"
-                  className={`w-full ${p.highlight ? "mt-3" : "mt-7"}`}
+                  className={`w-full drop-shadow-[0_0_10px_rgba(201,162,39,0.15)] hover:drop-shadow-[0_0_18px_rgba(201,162,39,0.3)] transition-[filter] duration-300 ${p.tagline ? "mt-3" : "mt-7"}`}
                 >
                   <Link to="/auth">{p.cta}</Link>
                 </Button>
