@@ -27,15 +27,27 @@ const notifications = [
 ];
 
 function DashboardLayout() {
+  const { t, i18n } = useTranslation();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const titleMap: Record<string, string> = {
+    "/dashboard": t("sidebar.dashboard"),
+    "/dashboard/analyze": t("sidebar.analyze"),
+    "/dashboard/reports": t("sidebar.reports"),
+    "/dashboard/report": t("sidebar.reports"),
+    "/dashboard/history": t("sidebar.history"),
+    "/dashboard/billing": t("sidebar.billing"),
+    "/dashboard/settings": t("sidebar.settings"),
+  };
   const title =
-    pathname === "/dashboard"
-      ? "Dashboard"
-      : pathname
-          .split("/")
-          .pop()
-          ?.replace(/-/g, " ")
-          .replace(/^\w/, (c) => c.toUpperCase()) ?? "Dashboard";
+    titleMap[pathname] ??
+    (pathname
+      .split("/")
+      .pop()
+      ?.replace(/-/g, " ")
+      .replace(/^\w/, (c) => c.toUpperCase()) ??
+      t("sidebar.dashboard"));
+  // reference i18n.language to re-render on language change
+  void i18n.language;
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -47,6 +59,7 @@ function DashboardLayout() {
             <h1 className="font-display text-lg font-semibold capitalize">{title}</h1>
           </div>
           <div className="flex items-center gap-2">
+            <LanguageSelector compact />
             <NotificationBell />
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-semibold text-primary-foreground">
               A
@@ -94,15 +107,16 @@ function NotificationBell() {
 }
 
 const mobileLinks = [
-  { label: "Dashboard", to: "/dashboard" },
-  { label: "Analyze Profile", to: "/dashboard/analyze" },
-  { label: "Reports", to: "/dashboard/reports" },
-  { label: "History", to: "/dashboard/history" },
-  { label: "Billing", to: "/dashboard/billing" },
-  { label: "Settings", to: "/dashboard/settings" },
+  { key: "sidebar.dashboard", to: "/dashboard" },
+  { key: "sidebar.analyze", to: "/dashboard/analyze" },
+  { key: "sidebar.reports", to: "/dashboard/reports" },
+  { key: "sidebar.history", to: "/dashboard/history" },
+  { key: "sidebar.billing", to: "/dashboard/billing" },
+  { key: "sidebar.settings", to: "/dashboard/settings" },
 ] as const;
 
 function MobileNav() {
+  const { t } = useTranslation();
   return (
     <Sheet>
       <SheetTrigger asChild>
