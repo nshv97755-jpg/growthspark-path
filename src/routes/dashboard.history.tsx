@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { GitCompare, ArrowRight, Search, History as HistoryIcon } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { Reveal } from "@/components/reveal";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/dashboard/history")({
 });
 
 function HistoryPage() {
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
@@ -28,15 +30,15 @@ function HistoryPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="font-display text-2xl font-bold">Analysis history</h2>
-          <p className="text-sm text-muted-foreground">Every profile you've analyzed.</p>
+          <h2 className="font-display text-2xl font-bold">{t("pages.history.title")}</h2>
+          <p className="text-sm text-muted-foreground">{t("pages.history.subtitle")}</p>
         </div>
         <Button
           variant="glass"
           size="sm"
-          onClick={() => toast("Select two reports to compare — coming soon")}
+          onClick={() => toast(t("pages.history.compare") + " — " + t("common.comingSoon"))}
         >
-          <GitCompare className="mr-1 h-4 w-4" /> Compare reports
+          <GitCompare className="mr-1 h-4 w-4" /> {t("pages.history.compare")}
         </Button>
       </div>
 
@@ -45,20 +47,20 @@ function HistoryPage() {
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search history"
+          placeholder={t("pages.history.searchPh")}
           className="pl-9"
-          aria-label="Search analysis history"
+          aria-label={t("pages.history.searchPh")}
         />
       </div>
 
       {filtered.length === 0 ? (
         <EmptyState
           icon={HistoryIcon}
-          title="No matches found"
-          description={`No analyses match "${query}". Try a different username or potential level.`}
+          title={t("pages.history.empty")}
+          description={`No analyses match "${query}".`}
           action={
             <Button variant="glass" size="sm" onClick={() => setQuery("")}>
-              Clear search
+              {t("common.close")}
             </Button>
           }
         />

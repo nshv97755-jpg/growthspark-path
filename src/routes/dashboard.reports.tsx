@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FileText, Download, ArrowRight, Plus } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { Reveal } from "@/components/reveal";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
@@ -12,18 +13,19 @@ export const Route = createFileRoute("/dashboard/reports")({
 });
 
 function Reports() {
+  const { t } = useTranslation();
   const reports = historyItems;
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-display text-2xl font-bold">Your reports</h2>
-          <p className="text-sm text-muted-foreground">Full growth playbooks you've generated.</p>
+          <h2 className="font-display text-2xl font-bold">{t("pages.reports.title")}</h2>
+          <p className="text-sm text-muted-foreground">{t("pages.reports.subtitle")}</p>
         </div>
         <Button asChild variant="hero" size="sm">
           <Link to="/dashboard/analyze">
-            <Plus className="mr-1 h-4 w-4" /> New report
+            <Plus className="mr-1 h-4 w-4" /> {t("common.newReport")}
           </Link>
         </Button>
       </div>
@@ -31,12 +33,12 @@ function Reports() {
       {reports.length === 0 ? (
         <EmptyState
           icon={FileText}
-          title="No reports yet"
-          description="Run your first profile analysis to generate a full growth playbook."
+          title={t("pages.reports.emptyTitle")}
+          description={t("pages.reports.emptyDesc")}
           action={
             <Button asChild variant="hero" size="sm">
               <Link to="/dashboard/analyze">
-                <Plus className="mr-1 h-4 w-4" /> Analyze a profile
+                <Plus className="mr-1 h-4 w-4" /> {t("common.analyzeProfile")}
               </Link>
             </Button>
           }

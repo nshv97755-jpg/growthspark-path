@@ -1,17 +1,20 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-
-const links = [
-  { label: "Features", href: "#features" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "FAQ", href: "#faq" },
-];
+import { LanguageSelector } from "@/components/language-selector";
 
 export function SiteNav() {
+  const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
+
+  const links = [
+    { label: t("nav.features"), href: "#features" },
+    { label: t("nav.pricing"), href: "#pricing" },
+    { label: t("nav.testimonials"), href: "#testimonials" },
+    { label: t("nav.faq"), href: "#faq" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -40,11 +43,12 @@ export function SiteNav() {
           ))}
         </div>
         <div className="flex items-center gap-2">
+          <LanguageSelector compact />
           <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
-            <Link to="/auth">Sign in</Link>
+            <Link to="/auth">{t("common.signIn")}</Link>
           </Button>
           <Button asChild variant="hero" size="sm">
-            <Link to="/dashboard/analyze">Analyze Profile</Link>
+            <Link to="/dashboard/analyze">{t("common.analyzeProfile")}</Link>
           </Button>
         </div>
       </nav>
