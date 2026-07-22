@@ -1,6 +1,8 @@
 import { createFileRoute, Outlet, Link, useRouterState } from "@tanstack/react-router";
 import { Bell, Menu } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
+import { LanguageSelector } from "@/components/language-selector";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
