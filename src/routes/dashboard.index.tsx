@@ -35,7 +35,7 @@ function Overview() {
       <Reveal>
         <div className="relative overflow-hidden rounded-3xl glass-strong p-8 shadow-card">
           <div
-            className="absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-30 blur-3xl"
+            className="absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-[0.10] blur-3xl"
             style={{ background: "var(--gradient-brand)" }}
           />
           <p className="text-sm text-muted-foreground">Welcome back, Alex</p>
@@ -89,8 +89,8 @@ function Overview() {
                 <AreaChart data={reportData.forecast}>
                   <defs>
                     <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#c9a227" stopOpacity={0.4} />
-                      <stop offset="100%" stopColor="#c9a227" stopOpacity={0} />
+                      <stop offset="0%" stopColor="#d4a94e" stopOpacity={0.4} />
+                      <stop offset="100%" stopColor="#d4a94e" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <XAxis
@@ -102,7 +102,7 @@ function Overview() {
                   />
                   <Tooltip
                     contentStyle={{
-                      background: "#18181b",
+                      background: "#111112",
                       border: "1px solid rgba(255,255,255,0.08)",
                       borderRadius: 12,
                       color: "white",
@@ -111,7 +111,7 @@ function Overview() {
                   <Area
                     type="monotone"
                     dataKey="followers"
-                    stroke="#c9a227"
+                    stroke="#d4a94e"
                     strokeWidth={3}
                     fill="url(#areaGrad)"
                   />
