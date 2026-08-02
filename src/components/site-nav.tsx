@@ -36,13 +36,14 @@ export function SiteNav() {
             <a
               key={l.href}
               href={l.href}
-              className="rounded-full px-3.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="rounded-full px-3.5 py-1.5 text-[0.875rem] font-medium tracking-[-0.01em] text-muted-foreground transition-colors hover:text-foreground"
             >
               {l.label}
             </a>
           ))}
         </div>
         <div className="flex items-center gap-2">
+          <span aria-hidden className="mr-1 hidden h-5 w-px bg-border sm:block" />
           <LanguageSelector compact />
           <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
             <Link to="/auth">{t("common.signIn")}</Link>
