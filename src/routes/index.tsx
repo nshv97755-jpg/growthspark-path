@@ -326,7 +326,7 @@ function Landing() {
                   asChild
                   variant={p.highlight ? "hero" : "glass"}
                   size="lg"
-                  className={`w-full drop-shadow-[0_0_10px_rgba(201,162,39,0.15)] hover:drop-shadow-[0_0_18px_rgba(201,162,39,0.3)] transition-[filter] duration-300 ${p.tagline ? "mt-3" : "mt-7"}`}
+                  className={`w-full drop-shadow-[0_0_10px_rgba(212,169,78,0.15)] hover:drop-shadow-[0_0_18px_rgba(212,169,78,0.3)] transition-[filter] duration-300 ${p.tagline ? "mt-3" : "mt-7"}`}
                 >
                   <Link to="/auth">{p.cta}</Link>
                 </Button>

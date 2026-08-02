@@ -46,10 +46,10 @@ export const Route = createFileRoute("/dashboard/report")({
 });
 
 const pieColors = [
-  "#c9a227",
-  "#00c2a8",
-  "#4fb286",
-  "#e0b34a",
+  "#d4a94e",
+  "#e5c36a",
+  "#b98f3c",
+  "#e5c36a",
 
 ];
 
@@ -214,7 +214,7 @@ function ReportContent() {
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    background: "#18181b",
+                    background: "#111112",
                     border: "1px solid rgba(255,255,255,0.08)",
                     borderRadius: 12,
                     color: "white",
@@ -268,20 +268,20 @@ function ReportContent() {
             <AreaChart data={reportData.forecast}>
               <defs>
                 <linearGradient id="repArea" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#00c2a8" stopOpacity={0.45} />
-                  <stop offset="100%" stopColor="#00c2a8" stopOpacity={0} />
+                  <stop offset="0%" stopColor="#e5c36a" stopOpacity={0.45} />
+                  <stop offset="100%" stopColor="#e5c36a" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <XAxis dataKey="month" stroke="#8b8b93" fontSize={12} tickLine={false} axisLine={false} />
               <Tooltip
                 contentStyle={{
-                  background: "#18181b",
+                  background: "#111112",
                   border: "1px solid rgba(255,255,255,0.08)",
                   borderRadius: 12,
                   color: "white",
                 }}
               />
-              <Area type="monotone" dataKey="followers" stroke="#00c2a8" strokeWidth={3} fill="url(#repArea)" />
+              <Area type="monotone" dataKey="followers" stroke="#e5c36a" strokeWidth={3} fill="url(#repArea)" />
 
             </AreaChart>
           </ResponsiveContainer>
