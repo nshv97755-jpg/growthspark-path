@@ -238,7 +238,7 @@ function Landing() {
       <section id="preview" className="relative px-4 pb-28">
         <Reveal className="mx-auto max-w-5xl">
           <div className="relative rounded-3xl glass-strong p-2 shadow-card">
-            <div className="absolute -inset-px -z-10 rounded-3xl bg-brand opacity-30 blur-2xl" />
+            <div className="absolute -inset-px -z-10 rounded-3xl bg-brand opacity-[0.12] blur-2xl" />
             <DashboardPreview />
           </div>
         </Reveal>
@@ -260,8 +260,8 @@ function Landing() {
         <div className="mx-auto mt-14 grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
             <Reveal key={f.title} delay={i * 0.05}>
-              <div className="group h-full rounded-2xl glass p-6 transition-all hover:-translate-y-1 hover:border-primary/40">
-                <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand shadow-glow">
+              <div className="group h-full rounded-2xl glass p-6 transition-all hover:-translate-y-0.5 hover:border-primary/25">
+                <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand">
                   <f.icon className="h-5 w-5 text-primary-foreground" />
                 </span>
                 <h3 className="font-display text-lg font-semibold">{f.title}</h3>
@@ -289,7 +289,7 @@ function Landing() {
               <div
                 className={`relative flex h-full flex-col rounded-3xl p-7 ${
                   p.highlight
-                    ? "glass-strong glow"
+                    ? "glass-strong ring-1 ring-primary/25"
                     : "glass"
                 }`}
               >
