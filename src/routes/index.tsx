@@ -238,7 +238,7 @@ function Landing() {
       <section id="preview" className="relative px-4 pb-28">
         <Reveal className="mx-auto max-w-5xl">
           <div className="relative rounded-3xl glass-strong p-2 shadow-card">
-            <div className="absolute -inset-px -z-10 rounded-3xl bg-brand opacity-[0.12] blur-2xl" />
+            <div className="absolute -inset-px -z-10 rounded-3xl bg-brand opacity-[0.08] blur-2xl" />
             <DashboardPreview />
           </div>
         </Reveal>

@@ -35,7 +35,7 @@ function Overview() {
       <Reveal>
         <div className="relative overflow-hidden rounded-3xl glass-strong p-8 shadow-card">
           <div
-            className="absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-30 blur-3xl"
+            className="absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-[0.10] blur-3xl"
             style={{ background: "var(--gradient-brand)" }}
           />
           <p className="text-sm text-muted-foreground">Welcome back, Alex</p>
