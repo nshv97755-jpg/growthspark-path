@@ -11,7 +11,7 @@ export function AuroraBackground({ className = "" }: { className?: string }) {
       />
       <div
         className="absolute right-[8%] top-[35%] h-72 w-72 rounded-full opacity-[0.05] blur-3xl animate-aurora"
-        style={{ background: "radial-gradient(circle, #9a7b3f, transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, #c2410c, transparent 70%)" }}
       />
       <div
         className="absolute inset-0 opacity-[0.025]"

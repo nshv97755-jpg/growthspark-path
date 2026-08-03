@@ -19,6 +19,8 @@ import { AuroraBackground } from "@/components/aurora-background";
 import { Reveal } from "@/components/reveal";
 import { Logo } from "@/components/logo";
 import { CountUp } from "@/components/count-up";
+import { BrandMarquee } from "@/components/brand-marquee";
+import { StatCard } from "@/components/stat-card";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -51,31 +53,37 @@ const features = [
     icon: Brain,
     title: "Deep Profile Diagnosis",
     desc: "AI reads your bio, content cadence, and engagement patterns to find what's silently capping your reach.",
+    points: ["Bio & positioning audit", "Cadence analysis"],
   },
   {
     icon: LineChart,
     title: "Growth Score Engine",
     desc: "A single, honest number that tells you exactly where you stand against your niche benchmarks.",
+    points: ["Niche benchmarks", "Category breakdown"],
   },
   {
     icon: Target,
     title: "Personalized Strategy",
     desc: "No generic tips. A plan built around your niche, audience, and the formats that actually work for you.",
+    points: ["Format recommendations", "Weekly action plan"],
   },
   {
     icon: Zap,
     title: "30 Content Ideas",
     desc: "Ready-to-shoot ideas, viral caption hooks, and hashtag sets generated for your exact audience.",
+    points: ["Hooks & captions", "Hashtag sets"],
   },
   {
     icon: TrendingUp,
     title: "6-Month Forecast",
     desc: "See the trajectory your account can hit once you fix the issues holding it back.",
+    points: ["Follower projection", "Reach modelling"],
   },
   {
     icon: Search,
     title: "Competitor Intelligence",
     desc: "Learn what the creators just ahead of you are doing differently — and how to close the gap.",
+    points: ["Gap analysis", "Winning formats"],
   },
 ];
 
@@ -180,36 +188,36 @@ function Landing() {
       <SiteNav />
 
       {/* Hero */}
-      <section className="relative px-4 pt-40 pb-24 text-center sm:pt-48">
+      <section className="relative px-4 pt-40 pb-16 text-center sm:pt-48">
         <AuroraBackground />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-44 -z-10 h-[26rem] w-[52rem] max-w-[110vw] -translate-x-1/2 gold-bloom"
-        />
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-border glass px-4 py-1.5 text-xs font-medium text-muted-foreground"
+          transition={{ duration: 0.5 }}
+          className="mx-auto mb-7 inline-flex items-center gap-2 rounded-full border border-white/[0.09] bg-card/70 px-3.5 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur"
         >
-          <Sparkles className="h-3.5 w-3.5 text-accent" />
-          AI growth strategist for creators
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+          </span>
+          What&apos;s new — AI growth strategist for creators
+          <Sparkles className="h-3.5 w-3.5 text-primary" />
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, delay: 0.12 }}
+          transition={{ duration: 0.7, delay: 0.12 }}
           className="mx-auto max-w-4xl text-balance font-display text-[2.85rem] font-bold leading-[1.02] tracking-[-0.04em] sm:text-[4.75rem]"
         >
           Discover Exactly Why <br className="hidden sm:block" />
-          <span className="text-gradient">You're Not Growing.</span>
+          <span className="text-gradient">You&apos;re Not Growing.</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.28 }}
+          transition={{ duration: 0.65, delay: 0.26 }}
           className="mx-auto mt-6 max-w-2xl text-balance text-lg text-muted-foreground"
         >
           AI analyzes your creator profile and gives you a personalized growth strategy — so you
@@ -219,14 +227,10 @@ function Landing() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.42 }}
+          transition={{ duration: 0.65, delay: 0.4 }}
           className="relative mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
         >
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-40 w-[30rem] max-w-[95vw] -translate-x-1/2 -translate-y-1/2 gold-bloom"
-          />
-          <Button asChild variant="hero" size="xl" className="animate-glow-breathe">
+          <Button asChild variant="hero" size="xl">
             <Link to="/dashboard/analyze">
               Analyze Profile <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
@@ -243,20 +247,40 @@ function Landing() {
         </p>
       </section>
 
-      {/* Dashboard Preview */}
-      <section id="preview" className="relative px-4 pb-28">
-        <Reveal className="mx-auto max-w-5xl">
-          <div className="relative rounded-3xl glass-strong p-2 shadow-card">
-            <div className="absolute -inset-px -z-10 rounded-3xl bg-brand opacity-[0.08] blur-2xl" />
+      {/* Dashboard Preview with sunrise arc */}
+      <section id="preview" className="relative px-4 pb-24">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-[-12rem] -z-10 h-[42rem] w-[70rem] max-w-[140vw] -translate-x-1/2 sun-arc opacity-90"
+        />
+        <motion.div
+          initial={{ opacity: 0, y: 40, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.9, delay: 0.55, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="mx-auto max-w-5xl"
+        >
+          <div className="relative rounded-3xl border border-white/[0.09] bg-card/80 p-2 shadow-card backdrop-blur">
             <DashboardPreview />
           </div>
-        </Reveal>
+        </motion.div>
+
+        {/* Trust bar */}
+        <div className="mx-auto mt-16 max-w-5xl">
+          <Reveal>
+            <p className="text-center text-sm text-muted-foreground">
+              Join 12,000+ creators &amp; brands already growing
+            </p>
+            <div className="mt-7">
+              <BrandMarquee />
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       {/* Features */}
       <section id="features" className="relative px-4 py-32">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-medium uppercase tracking-widest text-accent">Features</p>
+          <p className="text-sm font-medium uppercase tracking-widest text-primary">Features</p>
           <h2 className="mt-3 font-display text-[2.1rem] font-bold tracking-[-0.03em] sm:text-[2.75rem]">
             Strategy, not surface-level tips
           </h2>
@@ -268,15 +292,31 @@ function Landing() {
 
         <div className="mx-auto mt-14 grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
-            <Reveal key={f.title} delay={i * 0.05}>
-              <div className="group h-full rounded-2xl glass border border-white/[0.07] p-7 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-[rgba(240,180,95,0.28)] hover:shadow-warm">
-                <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand">
+            <motion.div
+              key={f.title}
+              initial={{ opacity: 0, y: 24, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.55, delay: (i % 3) * 0.12, ease: [0.21, 0.47, 0.32, 0.98] }}
+            >
+              <div className="group h-full rounded-2xl border border-white/[0.08] bg-card/70 p-7 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-primary/30 hover:shadow-warm">
+                <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary">
                   <f.icon className="h-5 w-5 text-primary-foreground" />
                 </span>
                 <h3 className="font-display text-lg font-semibold">{f.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
+                <ul className="mt-5 space-y-2">
+                  {f.points.map((pt) => (
+                    <li key={pt} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="flex h-4 w-4 items-center justify-center rounded-[5px] bg-primary/15">
+                        <Check className="h-3 w-3 text-primary" strokeWidth={3} />
+                      </span>
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </Reveal>
+            </motion.div>
           ))}
         </div>
       </section>
@@ -285,32 +325,32 @@ function Landing() {
       <section id="pricing" className="relative px-4 py-32">
         <AuroraBackground className="opacity-50" />
         <Reveal className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-medium uppercase tracking-widest text-accent">Pricing</p>
+          <p className="text-sm font-medium uppercase tracking-widest text-primary">Pricing</p>
           <h2 className="mt-3 font-display text-[2.1rem] font-bold tracking-[-0.03em] sm:text-[2.75rem]">Simple, honest pricing</h2>
           <p className="mt-4 text-muted-foreground">
-            Start free. Upgrade when you're ready to unlock the full playbook.
+            Start free. Upgrade when you&apos;re ready to unlock the full playbook.
           </p>
         </Reveal>
 
-        <div className="mx-auto mt-14 grid max-w-7xl gap-6 lg:grid-cols-4">
+        <div className="mx-auto mt-16 grid max-w-7xl items-start gap-6 lg:grid-cols-4">
           {pricing.map((p, i) => (
-            <Reveal key={p.name} delay={i * 0.07}>
+            <Reveal key={p.name} delay={i * 0.1}>
               <div
-                className={`relative flex h-full flex-col rounded-3xl p-7 ${
+                className={`relative flex h-full flex-col rounded-3xl p-7 transition-transform duration-300 ${
                   p.highlight
-                    ? "glass-strong border border-[rgba(212,169,78,0.28)] shadow-warm"
-                    : "glass border border-white/[0.07]"
+                    ? "border border-primary/40 bg-card shadow-[0_0_0_1px_rgba(249,115,22,0.18),0_30px_70px_-40px_rgba(249,115,22,0.6)] lg:scale-[1.05]"
+                    : "border border-white/[0.08] bg-card/60"
                 }`}
               >
                 {p.badge && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand px-3 py-1 text-xs font-semibold text-primary-foreground">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
                     {p.badge}
                   </span>
                 )}
                 <h3 className="font-display text-xl font-semibold">{p.name}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{p.desc}</p>
                 <div className="mt-5 flex items-end gap-1">
-                  <span className="font-display text-4xl font-bold">{p.price}</span>
+                  <span className="font-grotesk text-4xl font-bold">{p.price}</span>
                   <span className="mb-1 text-sm text-muted-foreground">{p.period}</span>
                 </div>
                 <ul className="mt-6 space-y-3 text-sm">
@@ -321,24 +361,28 @@ function Landing() {
                   )}
                   {p.features.map((feat) => (
                     <li key={feat} className="flex items-start gap-2.5 text-muted-foreground">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                      <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-[5px] bg-primary/15">
+                        <Check className="h-3 w-3 text-primary" strokeWidth={3} />
+                      </span>
                       {feat}
                     </li>
                   ))}
                 </ul>
                 {p.tagline && (
-                  <p className="mt-5 text-center text-xs font-medium tracking-wide text-accent">
+                  <p className="mt-5 text-center text-xs font-medium tracking-wide text-primary">
                     {p.tagline}
                   </p>
                 )}
-                <Button
-                  asChild
-                  variant={p.highlight ? "hero" : "glass"}
-                  size="lg"
-                  className={`w-full drop-shadow-[0_0_10px_rgba(212,169,78,0.15)] hover:drop-shadow-[0_0_18px_rgba(212,169,78,0.3)] transition-[filter] duration-300 ${p.tagline ? "mt-3" : "mt-7"}`}
-                >
-                  <Link to="/auth">{p.cta}</Link>
-                </Button>
+                <div className="mt-auto pt-7">
+                  <Button
+                    asChild
+                    variant={p.highlight ? "hero" : "glass"}
+                    size="lg"
+                    className="w-full"
+                  >
+                    <Link to="/auth">{p.cta}</Link>
+                  </Button>
+                </div>
               </div>
             </Reveal>
           ))}
@@ -348,25 +392,25 @@ function Landing() {
       {/* Testimonials */}
       <section id="testimonials" className="relative px-4 py-32">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-medium uppercase tracking-widest text-accent">Loved by creators</p>
+          <p className="text-sm font-medium uppercase tracking-widest text-primary">Loved by creators</p>
           <h2 className="mt-3 font-display text-[2.1rem] font-bold tracking-[-0.03em] sm:text-[2.75rem]">
             Growth you can actually feel
           </h2>
         </Reveal>
         <div className="mx-auto mt-14 grid max-w-6xl gap-5 md:grid-cols-3">
           {testimonials.map((t, i) => (
-            <Reveal key={t.name} delay={i * 0.07}>
-              <figure className="flex h-full flex-col rounded-2xl glass border border-white/[0.07] p-7 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-[rgba(240,180,95,0.24)] hover:shadow-warm">
-                <div className="mb-4 flex gap-0.5 text-warning">
+            <Reveal key={t.name} delay={i * 0.12}>
+              <figure className="flex h-full flex-col rounded-2xl border border-white/[0.08] bg-card/70 p-7 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-primary/25 hover:shadow-warm">
+                <div className="mb-4 flex gap-0.5 text-primary">
                   {Array.from({ length: 5 }).map((_, s) => (
                     <Star key={s} className="h-4 w-4 fill-current" />
                   ))}
                 </div>
                 <blockquote className="flex-1 text-sm leading-relaxed text-foreground/90">
-                  "{t.quote}"
+                  &ldquo;{t.quote}&rdquo;
                 </blockquote>
                 <figcaption className="mt-5 flex items-center gap-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-xs font-semibold text-primary-foreground">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
                     {t.name[0]}
                   </span>
                   <span>
@@ -384,7 +428,7 @@ function Landing() {
       <section id="faq" className="relative px-4 py-32">
         <Reveal className="mx-auto max-w-3xl">
           <div className="text-center">
-            <p className="text-sm font-medium uppercase tracking-widest text-accent">FAQ</p>
+            <p className="text-sm font-medium uppercase tracking-widest text-primary">FAQ</p>
             <h2 className="mt-3 font-display text-[2.1rem] font-bold tracking-[-0.03em] sm:text-[2.75rem]">
               Questions, answered
             </h2>
@@ -394,7 +438,7 @@ function Landing() {
               <AccordionItem
                 key={i}
                 value={`item-${i}`}
-                className="mb-3 rounded-2xl glass border border-white/[0.07] px-5 transition-colors hover:border-[rgba(240,180,95,0.22)] last:mb-0"
+                className="mb-3 rounded-2xl border border-white/[0.08] bg-card/60 px-5 transition-colors hover:border-primary/25 last:mb-0"
               >
                 <AccordionTrigger className="text-left font-medium hover:no-underline">
                   {f.q}
@@ -409,10 +453,13 @@ function Landing() {
       {/* Final CTA */}
       <section className="relative px-4 py-20">
         <Reveal className="mx-auto max-w-4xl">
-          <div className="relative overflow-hidden rounded-3xl glass-strong p-12 text-center shadow-card">
-            <AuroraBackground />
+          <div className="relative overflow-hidden rounded-3xl border border-white/[0.09] bg-card/70 p-12 text-center shadow-card">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-full -z-10 h-[22rem] w-[40rem] max-w-[120vw] -translate-x-1/2 -translate-y-1/2 sun-arc"
+            />
             <h2 className="mx-auto max-w-2xl font-display text-[2.3rem] font-bold leading-[1.08] tracking-[-0.035em] sm:text-[3rem]">
-              Your audience is waiting. Find out what's in the way.
+              Your audience is waiting. Find out what&apos;s in the way.
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
               Run a free analysis and get your Growth Score in under a minute.
@@ -427,16 +474,67 @@ function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border px-4 py-12">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
-          <Logo />
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
-            <a href="#features" className="hover:text-foreground">Features</a>
-            <a href="#pricing" className="hover:text-foreground">Pricing</a>
-            <a href="#faq" className="hover:text-foreground">FAQ</a>
-            <Link to="/auth" className="hover:text-foreground">Sign in</Link>
+      <footer className="border-t border-border px-4 pb-12 pt-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+            <div>
+              <Logo />
+              <p className="mt-4 max-w-xs text-sm text-muted-foreground">
+                The AI growth strategist that tells creators the truth about their account.
+              </p>
+              <form
+                className="mt-6 flex max-w-sm items-center gap-2 rounded-full border border-white/[0.09] bg-card/70 p-1.5"
+                onSubmit={(e) => e.preventDefault()}
+              >
+                <label htmlFor="footer-email" className="sr-only">
+                  Email address
+                </label>
+                <input
+                  id="footer-email"
+                  type="email"
+                  placeholder="you@example.com"
+                  className="min-w-0 flex-1 bg-transparent px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+                />
+                <Button asChild variant="hero" size="sm">
+                  <Link to="/auth">Get Started</Link>
+                </Button>
+              </form>
+            </div>
+            {[
+              { title: "Product", links: [["Features", "#features"], ["Pricing", "#pricing"], ["Demo", "#preview"]] },
+              { title: "Company", links: [["Testimonials", "#testimonials"], ["FAQ", "#faq"]] },
+            ].map((col) => (
+              <div key={col.title}>
+                <p className="font-display text-sm font-semibold">{col.title}</p>
+                <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+                  {col.links.map(([label, href]) => (
+                    <li key={label}>
+                      <a href={href} className="transition-colors hover:text-foreground">
+                        {label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <div>
+              <p className="font-display text-sm font-semibold">Account</p>
+              <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+                <li>
+                  <Link to="/auth" className="transition-colors hover:text-foreground">Sign in</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard/analyze" className="transition-colors hover:text-foreground">
+                    Analyze profile
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
-          <p className="text-xs text-muted-foreground">© 2026 GrowthPilot. All rights reserved.</p>
+          <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 sm:flex-row">
+            <p className="text-xs text-muted-foreground">© 2026 GrowthPilot. All rights reserved.</p>
+            <p className="text-xs text-muted-foreground">Made for creators who want the truth.</p>
+          </div>
         </div>
       </footer>
     </div>
@@ -444,16 +542,43 @@ function Landing() {
 }
 
 function DashboardPreview() {
+  const bars = [48, 53, 61, 72, 88, 126, 104];
+  const peak = 5;
   return (
-    <div className="overflow-hidden rounded-2xl bg-background/80">
+    <div className="overflow-hidden rounded-2xl bg-background/85">
       <div className="flex items-center gap-2 border-b border-border px-4 py-3">
         <span className="h-3 w-3 rounded-full bg-destructive/70" />
         <span className="h-3 w-3 rounded-full bg-warning/70" />
         <span className="h-3 w-3 rounded-full bg-success/70" />
         <span className="ml-3 text-xs text-muted-foreground">GrowthPilot · @creatorname</span>
       </div>
+
       <div className="grid gap-4 p-5 sm:grid-cols-3">
-        <div className="rounded-xl glass p-5 sm:col-span-1">
+        {[
+          { label: "Total Reach", value: 72350, delta: "6.9%", points: [12, 18, 15, 24, 22, 31, 38] },
+          { label: "Engagement", value: 8420, delta: "12.4%", points: [8, 11, 10, 16, 19, 18, 26] },
+          { label: "New Followers", value: 1960, delta: "4.2%", points: [5, 7, 9, 8, 13, 15, 19] },
+        ].map((s, i) => (
+          <motion.div
+            key={s.label}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5, delay: i * 0.13 }}
+          >
+            <StatCard label={s.label} value={s.value} delta={s.delta} points={s.points} />
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="grid gap-4 px-5 pb-5 sm:grid-cols-3">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.39 }}
+          className="rounded-2xl border border-white/[0.08] bg-card/70 p-5 sm:col-span-1"
+        >
           <p className="text-xs uppercase tracking-widest text-muted-foreground">Growth Score</p>
           <p className="mt-2 font-grotesk text-5xl font-bold text-gradient"><CountUp to={72} /></p>
           <p className="mt-1 text-xs text-muted-foreground">/ 100 · High potential</p>
@@ -480,14 +605,28 @@ function DashboardPreview() {
               </div>
             ))}
           </div>
-        </div>
-        <div className="rounded-xl glass p-5 sm:col-span-2">
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.52 }}
+          className="rounded-2xl border border-white/[0.08] bg-card/70 p-5 sm:col-span-2"
+        >
           <p className="text-xs uppercase tracking-widest text-muted-foreground">6-Month Forecast</p>
           <div className="mt-4 flex h-40 items-end gap-2">
-            {[48, 53, 61, 72, 88, 104, 126].map((h, i) => (
+            {bars.map((h, i) => (
               <motion.div
                 key={i}
-                className="flex-1 rounded-t-md bg-brand"
+                className="flex-1 rounded-t-md"
+                style={{
+                  background:
+                    i === peak
+                      ? "linear-gradient(180deg, #fb923c, #f97316)"
+                      : "linear-gradient(180deg, rgba(249,115,22,0.55), rgba(249,115,22,0.14))",
+                  boxShadow: i === peak ? "0 0 26px -6px rgba(249,115,22,0.7)" : undefined,
+                }}
                 initial={{ height: 0 }}
                 whileInView={{ height: `${(h / 126) * 100}%` }}
                 viewport={{ once: true }}
@@ -498,7 +637,7 @@ function DashboardPreview() {
           <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
             <Lock className="h-3.5 w-3.5" /> 7 growth problems found — unlock the fixes
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
