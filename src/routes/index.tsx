@@ -184,7 +184,7 @@ function Landing() {
         <AuroraBackground />
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-44 -z-10 h-[26rem] w-[52rem] max-w-[110vw] -translate-x-1/2 gold-bloom"
+          className="pointer-events-none absolute left-1/2 top-44 -z-10 h-[26rem] w-[52rem] max-w-[110vw] -translate-x-1/2 sun-bloom"
         />
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -224,7 +224,7 @@ function Landing() {
         >
           <div
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-40 w-[30rem] max-w-[95vw] -translate-x-1/2 -translate-y-1/2 gold-bloom"
+            className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-40 w-[30rem] max-w-[95vw] -translate-x-1/2 -translate-y-1/2 sun-bloom"
           />
           <Button asChild variant="hero" size="xl" className="animate-glow-breathe">
             <Link to="/dashboard/analyze">
