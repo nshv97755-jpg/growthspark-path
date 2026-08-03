@@ -18,6 +18,7 @@ import { SiteNav } from "@/components/site-nav";
 import { AuroraBackground } from "@/components/aurora-background";
 import { Reveal } from "@/components/reveal";
 import { Logo } from "@/components/logo";
+import { CountUp } from "@/components/count-up";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -181,6 +182,10 @@ function Landing() {
       {/* Hero */}
       <section className="relative px-4 pt-40 pb-24 text-center sm:pt-48">
         <AuroraBackground />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-44 -z-10 h-[26rem] w-[52rem] max-w-[110vw] -translate-x-1/2 gold-bloom"
+        />
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -194,8 +199,8 @@ function Landing() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.05 }}
-          className="mx-auto max-w-4xl text-balance font-display text-5xl font-bold leading-[1.05] sm:text-7xl"
+          transition={{ duration: 0.75, delay: 0.12 }}
+          className="mx-auto max-w-4xl text-balance font-display text-[2.85rem] font-bold leading-[1.02] tracking-[-0.04em] sm:text-[4.75rem]"
         >
           Discover Exactly Why <br className="hidden sm:block" />
           <span className="text-gradient">You're Not Growing.</span>
@@ -204,7 +209,7 @@ function Landing() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
+          transition={{ duration: 0.7, delay: 0.28 }}
           className="mx-auto mt-6 max-w-2xl text-balance text-lg text-muted-foreground"
         >
           AI analyzes your creator profile and gives you a personalized growth strategy — so you
@@ -214,10 +219,14 @@ function Landing() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.25 }}
-          className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
+          transition={{ duration: 0.7, delay: 0.42 }}
+          className="relative mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
         >
-          <Button asChild variant="hero" size="xl">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-40 w-[30rem] max-w-[95vw] -translate-x-1/2 -translate-y-1/2 gold-bloom"
+          />
+          <Button asChild variant="hero" size="xl" className="animate-glow-breathe">
             <Link to="/dashboard/analyze">
               Analyze Profile <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
@@ -245,10 +254,10 @@ function Landing() {
       </section>
 
       {/* Features */}
-      <section id="features" className="relative px-4 py-24">
+      <section id="features" className="relative px-4 py-32">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-sm font-medium uppercase tracking-widest text-accent">Features</p>
-          <h2 className="mt-3 font-display text-4xl font-bold sm:text-5xl">
+          <h2 className="mt-3 font-display text-[2.1rem] font-bold tracking-[-0.03em] sm:text-[2.75rem]">
             Strategy, not surface-level tips
           </h2>
           <p className="mt-4 text-muted-foreground">
@@ -260,7 +269,7 @@ function Landing() {
         <div className="mx-auto mt-14 grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
             <Reveal key={f.title} delay={i * 0.05}>
-              <div className="group h-full rounded-2xl glass p-6 transition-all hover:-translate-y-0.5 hover:border-primary/25">
+              <div className="group h-full rounded-2xl glass border border-white/[0.07] p-7 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-[rgba(240,180,95,0.28)] hover:shadow-warm">
                 <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand">
                   <f.icon className="h-5 w-5 text-primary-foreground" />
                 </span>
@@ -273,11 +282,11 @@ function Landing() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="relative px-4 py-24">
+      <section id="pricing" className="relative px-4 py-32">
         <AuroraBackground className="opacity-50" />
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-sm font-medium uppercase tracking-widest text-accent">Pricing</p>
-          <h2 className="mt-3 font-display text-4xl font-bold sm:text-5xl">Simple, honest pricing</h2>
+          <h2 className="mt-3 font-display text-[2.1rem] font-bold tracking-[-0.03em] sm:text-[2.75rem]">Simple, honest pricing</h2>
           <p className="mt-4 text-muted-foreground">
             Start free. Upgrade when you're ready to unlock the full playbook.
           </p>
@@ -289,8 +298,8 @@ function Landing() {
               <div
                 className={`relative flex h-full flex-col rounded-3xl p-7 ${
                   p.highlight
-                    ? "glass-strong ring-1 ring-primary/25"
-                    : "glass"
+                    ? "glass-strong border border-[rgba(212,169,78,0.28)] shadow-warm"
+                    : "glass border border-white/[0.07]"
                 }`}
               >
                 {p.badge && (
@@ -337,17 +346,17 @@ function Landing() {
       </section>
 
       {/* Testimonials */}
-      <section id="testimonials" className="relative px-4 py-24">
+      <section id="testimonials" className="relative px-4 py-32">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-sm font-medium uppercase tracking-widest text-accent">Loved by creators</p>
-          <h2 className="mt-3 font-display text-4xl font-bold sm:text-5xl">
+          <h2 className="mt-3 font-display text-[2.1rem] font-bold tracking-[-0.03em] sm:text-[2.75rem]">
             Growth you can actually feel
           </h2>
         </Reveal>
         <div className="mx-auto mt-14 grid max-w-6xl gap-5 md:grid-cols-3">
           {testimonials.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.07}>
-              <figure className="flex h-full flex-col rounded-2xl glass p-6">
+              <figure className="flex h-full flex-col rounded-2xl glass border border-white/[0.07] p-7 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-[rgba(240,180,95,0.24)] hover:shadow-warm">
                 <div className="mb-4 flex gap-0.5 text-warning">
                   {Array.from({ length: 5 }).map((_, s) => (
                     <Star key={s} className="h-4 w-4 fill-current" />
@@ -372,11 +381,11 @@ function Landing() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="relative px-4 py-24">
+      <section id="faq" className="relative px-4 py-32">
         <Reveal className="mx-auto max-w-3xl">
           <div className="text-center">
             <p className="text-sm font-medium uppercase tracking-widest text-accent">FAQ</p>
-            <h2 className="mt-3 font-display text-4xl font-bold sm:text-5xl">
+            <h2 className="mt-3 font-display text-[2.1rem] font-bold tracking-[-0.03em] sm:text-[2.75rem]">
               Questions, answered
             </h2>
           </div>
@@ -385,7 +394,7 @@ function Landing() {
               <AccordionItem
                 key={i}
                 value={`item-${i}`}
-                className="mb-3 rounded-2xl glass px-5 last:mb-0"
+                className="mb-3 rounded-2xl glass border border-white/[0.07] px-5 transition-colors hover:border-[rgba(240,180,95,0.22)] last:mb-0"
               >
                 <AccordionTrigger className="text-left font-medium hover:no-underline">
                   {f.q}
@@ -402,7 +411,7 @@ function Landing() {
         <Reveal className="mx-auto max-w-4xl">
           <div className="relative overflow-hidden rounded-3xl glass-strong p-12 text-center shadow-card">
             <AuroraBackground />
-            <h2 className="mx-auto max-w-2xl font-display text-4xl font-bold sm:text-5xl">
+            <h2 className="mx-auto max-w-2xl font-display text-[2.3rem] font-bold leading-[1.08] tracking-[-0.035em] sm:text-[3rem]">
               Your audience is waiting. Find out what's in the way.
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
@@ -446,7 +455,7 @@ function DashboardPreview() {
       <div className="grid gap-4 p-5 sm:grid-cols-3">
         <div className="rounded-xl glass p-5 sm:col-span-1">
           <p className="text-xs uppercase tracking-widest text-muted-foreground">Growth Score</p>
-          <p className="mt-2 font-display text-5xl font-bold text-gradient">72</p>
+          <p className="mt-2 font-grotesk text-5xl font-bold text-gradient"><CountUp to={72} /></p>
           <p className="mt-1 text-xs text-muted-foreground">/ 100 · High potential</p>
           <div className="mt-4 space-y-2.5">
             {[
