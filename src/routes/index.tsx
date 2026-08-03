@@ -251,7 +251,7 @@ function Landing() {
       <section id="preview" className="relative px-4 pb-24">
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[-6rem] -z-10 h-[34rem] w-[64rem] max-w-[130vw] -translate-x-1/2 sun-arc"
+          className="pointer-events-none absolute left-1/2 top-[-12rem] -z-10 h-[42rem] w-[70rem] max-w-[140vw] -translate-x-1/2 sun-arc opacity-90"
         />
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.96 }}
