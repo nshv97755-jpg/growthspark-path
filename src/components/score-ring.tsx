@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { CountUp } from "@/components/count-up";
 
 export function ScoreRing({
   value,
@@ -21,7 +22,7 @@ export function ScoreRing({
           <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#d4a94e" />
             <stop offset="55%" stopColor="#e5c36a" />
-            <stop offset="100%" stopColor="#e5c36a" />
+            <stop offset="100%" stopColor="#f0b45f" />
 
           </linearGradient>
         </defs>
@@ -54,7 +55,7 @@ export function ScoreRing({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          {value}
+          <CountUp to={value} duration={1400} />
         </motion.span>
         <span className="text-xs uppercase tracking-widest text-muted-foreground">/ 100</span>
         <span className="mt-1 text-sm font-medium text-muted-foreground">{label}</span>

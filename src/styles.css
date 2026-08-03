@@ -47,9 +47,12 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-grotesk: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+
+  --color-bronze: var(--bronze);
+  --color-amber-warm: var(--amber-warm);
 }
 
 :root {
@@ -81,6 +84,10 @@
   --destructive: #e5484d;
   --destructive-foreground: #fafafa;
 
+  /* Secondary warm accents — used sparingly */
+  --bronze: #9a7b3f;
+  --amber-warm: #f0b45f;
+
   --success: #4fb286;
   --warning: #d4a94e;
 
@@ -111,7 +118,10 @@
 
   /* Soft, elegant shadows */
   --shadow-glow: 0 0 0 1px rgba(212, 169, 78, 0.14), 0 10px 30px -18px rgba(212, 169, 78, 0.35);
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), 0 20px 48px -32px rgba(0, 0, 0, 0.8);
+  /* Warm-tinted, not pure black */
+  --shadow-card: 0 1px 2px rgba(20, 12, 0, 0.5), 0 20px 48px -30px rgba(90, 62, 18, 0.55);
+  --shadow-warm-lg: 0 2px 4px rgba(20, 12, 0, 0.4), 0 28px 60px -28px rgba(120, 84, 24, 0.5);
+  --shadow-button: 0 8px 24px -12px rgba(212, 169, 78, 0.55), 0 2px 6px -2px rgba(30, 20, 0, 0.6);
 }
 
 
@@ -126,6 +136,11 @@
 
   body {
     background-color: var(--color-background);
+    background-image:
+      radial-gradient(120% 80% at 50% -10%, rgba(212, 169, 78, 0.045), transparent 60%),
+      radial-gradient(90% 60% at 0% 100%, rgba(60, 42, 20, 0.28), transparent 65%),
+      radial-gradient(90% 60% at 100% 100%, rgba(48, 34, 18, 0.24), transparent 65%);
+    background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -220,4 +235,67 @@
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
   background-size: 200% 100%;
   animation: shimmer 1.8s linear infinite;
+}
+
+
+/* Fine grain/noise overlay so the black never reads flat */
+@utility grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* Soft radial gold bloom used behind headlines / CTAs */
+@utility gold-bloom {
+  background: radial-gradient(closest-side, rgba(212, 169, 78, 0.22), rgba(212, 169, 78, 0.07) 55%, transparent 100%);
+  filter: blur(48px);
+}
+
+@utility shadow-warm {
+  box-shadow: var(--shadow-warm-lg);
+}
+
+@utility card-edge {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+@keyframes glow-breathe {
+  0%, 100% { box-shadow: 0 8px 24px -12px rgba(212, 169, 78, 0.45), 0 0 0 1px rgba(212, 169, 78, 0.16); }
+  50% { box-shadow: 0 12px 34px -10px rgba(212, 169, 78, 0.75), 0 0 0 1px rgba(240, 180, 95, 0.3); }
+}
+
+@keyframes sheen {
+  0% { transform: translateX(-140%) skewX(-18deg); }
+  60%, 100% { transform: translateX(240%) skewX(-18deg); }
+}
+
+@utility animate-glow-breathe {
+  animation: glow-breathe 3.6s ease-in-out infinite;
+}
+
+@utility btn-sheen {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    animation: sheen 4.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
