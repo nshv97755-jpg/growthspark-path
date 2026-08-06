@@ -18,13 +18,6 @@ import {
 import { ScoreRing } from "@/components/score-ring";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
 import { useInstagramConnection } from "@/hooks/use-instagram-connection";
 import { sampleAnalysis, lockedIssues, loadingMessages } from "@/lib/mock";
 
