@@ -38,79 +38,111 @@ type Stage = "idle" | "loading" | "result";
 function Analyze() {
   const [stage, setStage] = useState<Stage>("idle");
   const [username, setUsername] = useState("");
-  const [connectOpen, setConnectOpen] = useState(false);
   const { status, connect } = useInstagramConnection();
-
-  // Attempt to start analysis: gate on an Instagram connection.
-  const requestStart = () => {
-    if (status === "connected") {
-      setStage("loading");
-    } else {
-      setConnectOpen(true);
-    }
-  };
 
   const handleConnect = async () => {
     try {
       const c = await connect();
+      setUsername(c.username);
       toast.success(`Instagram connected — @${c.username}`);
-      setConnectOpen(false);
       setStage("loading");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Couldn't connect Instagram");
     }
   };
 
+  const connected = status === "connected";
+
   return (
     <div className="mx-auto max-w-5xl">
       <AnimatePresence mode="wait">
-        {stage === "idle" && (
-          <Idle
-            key="idle"
-            username={username}
-            setUsername={setUsername}
-            onStart={requestStart}
+        {status === "loading" && (
+          <motion.div
+            key="boot"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex min-h-[60vh] items-center justify-center text-muted-foreground"
+          >
+            <Loader2 className="h-5 w-5 animate-spin" />
+          </motion.div>
+        )}
+
+        {status !== "loading" && !connected && stage !== "loading" && stage !== "result" && (
+          <ConnectGate
+            key="gate"
+            connecting={status === "connecting"}
+            onConnect={handleConnect}
           />
+        )}
+
+        {connected && stage === "idle" && (
+          <Idle key="idle" username={username} setUsername={setUsername} onStart={() => setStage("loading")} />
         )}
         {stage === "loading" && <Loading key="loading" onDone={() => setStage("result")} />}
         {stage === "result" && (
           <Result key="result" username={username} onReset={() => setStage("idle")} />
         )}
       </AnimatePresence>
-
-      <Dialog open={connectOpen} onOpenChange={setConnectOpen}>
-        <DialogContent className="glass-strong sm:max-w-md">
-          <DialogHeader className="items-center text-center">
-            <span className="mb-2 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand text-primary-foreground">
-              <Instagram className="h-7 w-7" />
-            </span>
-            <DialogTitle className="font-display text-xl">Connect Instagram</DialogTitle>
-            <DialogDescription className="text-muted-foreground">
-              Connect your Instagram account to generate your personalized growth report.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="mt-2 flex justify-center">
-            <Button
-              type="button"
-              variant="hero"
-              size="lg"
-              disabled={status === "connecting"}
-              onClick={handleConnect}
-            >
-              {status === "connecting" ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" /> Connecting…
-                </>
-              ) : (
-                <>
-                  <Instagram className="h-4 w-4" /> Connect Instagram
-                </>
-              )}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
+  );
+}
+
+function ConnectGate({
+  connecting,
+  onConnect,
+}: {
+  connecting: boolean;
+  onConnect: () => void;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -16 }}
+      className="flex min-h-[60vh] flex-col items-center justify-center text-center"
+    >
+      <span className="mb-5 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs text-muted-foreground">
+        <Sparkles className="h-3.5 w-3.5 text-accent" /> Step 1 of 2 · Connect
+      </span>
+      <span className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand text-primary-foreground">
+        <Instagram className="h-8 w-8" />
+      </span>
+      <h2 className="max-w-xl font-display text-4xl font-bold sm:text-5xl">
+        Continue with <span className="text-gradient">Instagram</span>
+      </h2>
+      <p className="mt-3 max-w-md text-muted-foreground">
+        Authenticate your account to unlock your personalized growth analysis. We only read public
+        profile insights — never your password.
+      </p>
+
+      <Button
+        type="button"
+        variant="hero"
+        size="xl"
+        className="mt-8"
+        disabled={connecting}
+        onClick={onConnect}
+      >
+        {connecting ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" /> Connecting…
+          </>
+        ) : (
+          <>
+            <Instagram className="h-4 w-4" /> Continue with Instagram
+          </>
+        )}
+      </Button>
+
+      <ul className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
+        {["Secure OAuth", "Read-only access", "Disconnect anytime"].map((f) => (
+          <li key={f} className="flex items-center gap-1.5">
+            <Check className="h-3.5 w-3.5 text-success" /> {f}
+          </li>
+        ))}
+      </ul>
+    </motion.div>
   );
 }
 
