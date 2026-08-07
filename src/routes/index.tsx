@@ -29,7 +29,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -99,7 +98,13 @@ const pricing = [
     badge: null,
     tagline: null,
     includes: null,
-    features: ["1 AI Report per week", "Basic AI Analysis", "Growth Score", "Limited Report Preview", "Instagram Connection"],
+    features: [
+      "1 AI Report per week",
+      "Basic AI Analysis",
+      "Growth Score",
+      "Limited Report Preview",
+      "Instagram Connection",
+    ],
   },
   {
     name: "Pro",
@@ -111,7 +116,16 @@ const pricing = [
     badge: "Most popular",
     tagline: "💎 Buy Pro. Get More Aura.",
     includes: null,
-    features: ["Unlimited AI Reports", "Full AI Report", "PDF Export", "AI Bio Suggestions", "AI Caption Suggestions", "AI Hashtag Suggestions", "Report History", "Priority Processing"],
+    features: [
+      "Unlimited AI Reports",
+      "Full AI Report",
+      "PDF Export",
+      "AI Bio Suggestions",
+      "AI Caption Suggestions",
+      "AI Hashtag Suggestions",
+      "Report History",
+      "Priority Processing",
+    ],
   },
   {
     name: "God Mode",
@@ -123,7 +137,16 @@ const pricing = [
     badge: null,
     tagline: "💀 Aura is cute. God Mode owns the algorithm.",
     includes: "Everything in Pro, plus:",
-    features: ["Competitor Analysis", "Viral Hook Generator", "AI Reel Script Generator", "30-Day Content Calendar", "AI Growth Roadmap", "Fastest AI Processing", "Early Access to New Features", "Future Premium Features Included"],
+    features: [
+      "Competitor Analysis",
+      "Viral Hook Generator",
+      "AI Reel Script Generator",
+      "30-Day Content Calendar",
+      "AI Growth Roadmap",
+      "Fastest AI Processing",
+      "Early Access to New Features",
+      "Future Premium Features Included",
+    ],
   },
   {
     name: "Founder's Pass",
@@ -135,7 +158,13 @@ const pricing = [
     badge: "🔥 Limited to First 100 Users",
     tagline: "🗿 They rent. You own.",
     includes: "Everything in God Mode, plus:",
-    features: ["Lifetime Access", "Lifetime Updates", "Founder Badge", "Priority Support", "Early Access to Every Future Feature"],
+    features: [
+      "Lifetime Access",
+      "Lifetime Updates",
+      "Founder Badge",
+      "Priority Support",
+      "Early Access to Every Future Feature",
+    ],
   },
 ];
 
@@ -153,8 +182,7 @@ const testimonials = [
     role: "Tech reviewer",
   },
   {
-    quote:
-      "The forecast alone paid for itself. I finally knew which formats to double down on.",
+    quote: "The forecast alone paid for itself. I finally knew which formats to double down on.",
     name: "Priya S.",
     role: "Fitness coach",
   },
@@ -327,7 +355,9 @@ function Landing() {
         <AuroraBackground className="opacity-50" />
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-sm font-medium uppercase tracking-widest text-primary">Pricing</p>
-          <h2 className="mt-3 font-display text-[2.1rem] font-bold tracking-[-0.03em] sm:text-[2.75rem]">Simple, honest pricing</h2>
+          <h2 className="mt-3 font-display text-[2.1rem] font-bold tracking-[-0.03em] sm:text-[2.75rem]">
+            Simple, honest pricing
+          </h2>
           <p className="mt-4 text-muted-foreground">
             Start free. Upgrade when you&apos;re ready to unlock the full playbook.
           </p>
@@ -393,7 +423,9 @@ function Landing() {
       {/* Testimonials */}
       <section id="testimonials" className="relative px-4 py-32">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-medium uppercase tracking-widest text-primary">Loved by creators</p>
+          <p className="text-sm font-medium uppercase tracking-widest text-primary">
+            Loved by creators
+          </p>
           <h2 className="mt-3 font-display text-[2.1rem] font-bold tracking-[-0.03em] sm:text-[2.75rem]">
             Growth you can actually feel
           </h2>
@@ -494,7 +526,12 @@ function DashboardPreview() {
 
       <div className="grid gap-4 p-5 sm:grid-cols-3">
         {[
-          { label: "Total Reach", value: 72350, delta: "6.9%", points: [12, 18, 15, 24, 22, 31, 38] },
+          {
+            label: "Total Reach",
+            value: 72350,
+            delta: "6.9%",
+            points: [12, 18, 15, 24, 22, 31, 38],
+          },
           { label: "Engagement", value: 8420, delta: "12.4%", points: [8, 11, 10, 16, 19, 18, 26] },
           { label: "New Followers", value: 1960, delta: "4.2%", points: [5, 7, 9, 8, 13, 15, 19] },
         ].map((s, i) => (
@@ -519,7 +556,9 @@ function DashboardPreview() {
           className="rounded-2xl border border-white/[0.08] bg-card/70 p-5 sm:col-span-1"
         >
           <p className="text-xs uppercase tracking-widest text-muted-foreground">Growth Score</p>
-          <p className="mt-2 font-grotesk text-5xl font-bold text-gradient"><CountUp to={72} /></p>
+          <p className="mt-2 font-grotesk text-5xl font-bold text-gradient">
+            <CountUp to={72} />
+          </p>
           <p className="mt-1 text-xs text-muted-foreground">/ 100 · High potential</p>
           <div className="mt-4 space-y-2.5">
             {[
@@ -553,7 +592,9 @@ function DashboardPreview() {
           transition={{ duration: 0.5, delay: 0.52 }}
           className="rounded-2xl border border-white/[0.08] bg-card/70 p-5 sm:col-span-2"
         >
-          <p className="text-xs uppercase tracking-widest text-muted-foreground">6-Month Forecast</p>
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">
+            6-Month Forecast
+          </p>
           <div className="mt-4 flex h-40 items-end gap-2">
             {bars.map((h, i) => (
               <motion.div

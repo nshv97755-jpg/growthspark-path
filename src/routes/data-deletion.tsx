@@ -23,9 +23,7 @@ export const Route = createFileRoute("/data-deletion")({
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://growthspark-path.lovable.app/data-deletion" },
     ],
-    links: [
-      { rel: "canonical", href: "https://growthspark-path.lovable.app/data-deletion" },
-    ],
+    links: [{ rel: "canonical", href: "https://growthspark-path.lovable.app/data-deletion" }],
   }),
   component: DataDeletionPage,
 });
@@ -41,14 +39,20 @@ function DataDeletionPage() {
       <section className="border-b border-white/[0.08] pb-10">
         <h2 className="font-display text-xl font-semibold text-foreground">Your Right to Delete</h2>
         <p className="mt-4 leading-relaxed text-muted-foreground">
-          You have the right to request the deletion of your personal data and account information from GrowthPilot at any time. Once we verify your request, we will permanently remove all stored data associated with your account, including your Instagram connection details, profile analytics, and generated reports.
+          You have the right to request the deletion of your personal data and account information
+          from GrowthPilot at any time. Once we verify your request, we will permanently remove all
+          stored data associated with your account, including your Instagram connection details,
+          profile analytics, and generated reports.
         </p>
       </section>
 
       <section className="border-b border-white/[0.08] pb-10">
-        <h2 className="font-display text-xl font-semibold text-foreground">How to Request Deletion</h2>
+        <h2 className="font-display text-xl font-semibold text-foreground">
+          How to Request Deletion
+        </h2>
         <p className="mt-4 leading-relaxed text-muted-foreground">
-          To request deletion of your account data, please send an email from the address associated with your GrowthPilot account to:
+          To request deletion of your account data, please send an email from the address associated
+          with your GrowthPilot account to:
         </p>
         <a
           href="mailto:nshv97755@gmail.com?subject=GrowthPilot%20Data%20Deletion%20Request"
@@ -70,28 +74,44 @@ function DataDeletionPage() {
       <section className="border-b border-white/[0.08] pb-10">
         <h2 className="font-display text-xl font-semibold text-foreground">Verification Process</h2>
         <p className="mt-4 leading-relaxed text-muted-foreground">
-          Before we delete your data, we will verify your identity to protect your account from unauthorized deletion requests. We may send a confirmation email or ask you to confirm details associated with your account. Once verification is complete, deletion will proceed automatically.
+          Before we delete your data, we will verify your identity to protect your account from
+          unauthorized deletion requests. We may send a confirmation email or ask you to confirm
+          details associated with your account. Once verification is complete, deletion will proceed
+          automatically.
         </p>
       </section>
 
       <section className="border-b border-white/[0.08] pb-10">
         <h2 className="font-display text-xl font-semibold text-foreground">Deletion Timeline</h2>
         <p className="mt-4 leading-relaxed text-muted-foreground">
-          <strong className="text-foreground">All stored data will be permanently deleted within 7 days</strong> of successful verification. This includes your profile information, analytics, reports, payment records, and any stored Instagram access tokens. Some residual data may remain in encrypted backups for a short period but will be permanently purged according to our backup retention schedule.
+          <strong className="text-foreground">
+            All stored data will be permanently deleted within 7 days
+          </strong>{" "}
+          of successful verification. This includes your profile information, analytics, reports,
+          payment records, and any stored Instagram access tokens. Some residual data may remain in
+          encrypted backups for a short period but will be permanently purged according to our
+          backup retention schedule.
         </p>
       </section>
 
       <section className="border-b border-white/[0.08] pb-10">
-        <h2 className="font-display text-xl font-semibold text-foreground">What Happens After Deletion</h2>
+        <h2 className="font-display text-xl font-semibold text-foreground">
+          What Happens After Deletion
+        </h2>
         <p className="mt-4 leading-relaxed text-muted-foreground">
-          Once deletion is complete, your account will be closed and you will no longer be able to access any reports or data. We will also revoke any active Instagram access tokens connected to your account. Deleted data cannot be recovered.
+          Once deletion is complete, your account will be closed and you will no longer be able to
+          access any reports or data. We will also revoke any active Instagram access tokens
+          connected to your account. Deleted data cannot be recovered.
         </p>
       </section>
 
       <section>
-        <h2 className="font-display text-xl font-semibold text-foreground">Questions About Deletion</h2>
+        <h2 className="font-display text-xl font-semibold text-foreground">
+          Questions About Deletion
+        </h2>
         <p className="mt-4 leading-relaxed text-muted-foreground">
-          If you have any questions about the data deletion process or need help with your request, please contact us at:
+          If you have any questions about the data deletion process or need help with your request,
+          please contact us at:
         </p>
         <a
           href="mailto:nshv97755@gmail.com"
