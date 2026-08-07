@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Shield, Lock, Eye, Server, Users, Mail } from "lucide-react";
+import { Shield, Mail } from "lucide-react";
 import { LegalShell } from "@/components/legal-shell";
 
 export const Route = createFileRoute("/privacy")({
