@@ -15,9 +15,9 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
+import { SiteFooter } from "@/components/site-footer";
 import { AuroraBackground } from "@/components/aurora-background";
 import { Reveal } from "@/components/reveal";
-import { Logo } from "@/components/logo";
 import { CountUp } from "@/components/count-up";
 import { BrandMarquee } from "@/components/brand-marquee";
 import { StatCard } from "@/components/stat-card";
@@ -28,6 +28,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
