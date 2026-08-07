@@ -19,6 +19,7 @@ import { ScoreRing } from "@/components/score-ring";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useInstagramConnection } from "@/hooks/use-instagram-connection";
+import { logApiCall, saveAnalysis, saveReport } from "@/lib/db";
 import { sampleAnalysis, lockedIssues, loadingMessages } from "@/lib/mock";
 
 export const Route = createFileRoute("/dashboard/analyze")({
