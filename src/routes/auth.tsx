@@ -220,18 +220,29 @@ function Field({
   label,
   placeholder,
   type,
+  value,
+  onChange,
 }: {
   icon: typeof Mail;
   label: string;
   placeholder: string;
   type: string;
+  value: string;
+  onChange: (v: string) => void;
 }) {
   return (
     <div>
       <Label className="text-sm text-muted-foreground">{label}</Label>
       <div className="relative mt-1.5">
         <Icon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input type={type} placeholder={placeholder} className="pl-9" required />
+        <Input
+          type={type}
+          placeholder={placeholder}
+          className="pl-9"
+          required
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
       </div>
     </div>
   );
