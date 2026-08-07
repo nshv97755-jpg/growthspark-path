@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FileText, CheckCircle, User, Lock, Sparkles, Copyright, Scale, Mail } from "lucide-react";
+import { FileText, Mail } from "lucide-react";
 import { LegalShell } from "@/components/legal-shell";
 
 export const Route = createFileRoute("/terms")({
