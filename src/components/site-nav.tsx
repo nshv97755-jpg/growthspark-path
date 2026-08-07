@@ -35,7 +35,7 @@ export function SiteNav() {
           {links.map((l) => (
             <a
               key={l.href}
-              href={l.href}
+              href={`/${l.href}`}
               className="rounded-full px-3.5 py-1.5 text-[0.875rem] font-medium tracking-[-0.01em] text-muted-foreground transition-colors hover:text-foreground"
             >
               {l.label}
