@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GitCompare, ArrowRight, Search, History as HistoryIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -7,6 +7,7 @@ import { Reveal } from "@/components/reveal";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { listAnalyses } from "@/lib/db";
 import { historyItems } from "@/lib/mock";
 
 export const Route = createFileRoute("/dashboard/history")({
@@ -17,14 +18,37 @@ export const Route = createFileRoute("/dashboard/history")({
 function HistoryPage() {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
+  const [items, setItems] = useState(historyItems);
+
+  useEffect(() => {
+    let active = true;
+    listAnalyses().then((rows) => {
+      if (!active || rows.length === 0) return;
+      setItems(
+        rows.map((r) => ({
+          username: `@${r.username}`,
+          score: r.score ?? 0,
+          potential: r.potential ?? "—",
+          date: new Date(r.created_at).toLocaleDateString(undefined, {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+          }),
+        })),
+      );
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return historyItems;
-    return historyItems.filter(
+    if (!q) return items;
+    return items.filter(
       (h) => h.username.toLowerCase().includes(q) || h.potential.toLowerCase().includes(q),
     );
-  }, [query]);
+  }, [query, items]);
 
   return (
     <div className="space-y-6">
