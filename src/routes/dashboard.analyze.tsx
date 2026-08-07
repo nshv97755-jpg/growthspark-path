@@ -44,7 +44,36 @@ function Analyze() {
     }
   };
 
+  // Persist the finished analysis (and its report) to Lovable Cloud.
+  const persistAnalysis = async (handle: string) => {
+    const startedAt = performance.now();
+    const clean = handle.replace(/^@/, "") || sampleAnalysis.username;
+    const analysisId = await saveAnalysis({
+      username: clean,
+      score: sampleAnalysis.growthScore,
+      potential: sampleAnalysis.growthPotential,
+      result: sampleAnalysis,
+    });
+    if (analysisId) {
+      await saveReport({
+        analysisId,
+        title: `Growth report — @${clean}`,
+        summary: `Top issue: ${sampleAnalysis.topIssue} · Potential gain ${sampleAnalysis.potentialGain}`,
+        content: sampleAnalysis,
+      });
+    }
+    await logApiCall({
+      endpoint: "instagram/analyze",
+      method: "POST",
+      statusCode: analysisId ? 200 : 401,
+      durationMs: Math.round(performance.now() - startedAt),
+      analysisId,
+      metadata: { username: clean },
+    });
+  };
+
   const connected = status === "connected";
+
 
   return (
     <div className="mx-auto max-w-5xl">
