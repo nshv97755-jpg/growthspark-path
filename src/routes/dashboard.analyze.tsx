@@ -102,7 +102,15 @@ function Analyze() {
         {connected && stage === "idle" && (
           <Idle key="idle" username={username} setUsername={setUsername} onStart={() => setStage("loading")} />
         )}
-        {stage === "loading" && <Loading key="loading" onDone={() => setStage("result")} />}
+        {stage === "loading" && (
+          <Loading
+            key="loading"
+            onDone={() => {
+              setStage("result");
+              void persistAnalysis(username);
+            }}
+          />
+        )}
         {stage === "result" && (
           <Result key="result" username={username} onReset={() => setStage("idle")} />
         )}
