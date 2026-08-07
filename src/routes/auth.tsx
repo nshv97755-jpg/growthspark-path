@@ -1,12 +1,14 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Mail, Lock, User, ArrowRight, ArrowLeft } from "lucide-react";
+import { Mail, Lock, User, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { AuroraBackground } from "@/components/aurora-background";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
