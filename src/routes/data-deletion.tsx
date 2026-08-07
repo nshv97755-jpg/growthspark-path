@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Trash2, Mail, Clock, Shield, UserX } from "lucide-react";
+import { Trash2, Mail } from "lucide-react";
 import { LegalShell } from "@/components/legal-shell";
 
 export const Route = createFileRoute("/data-deletion")({
