@@ -14,7 +14,202 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      analyses: {
+        Row: {
+          created_at: string
+          id: string
+          potential: string | null
+          result: Json
+          score: number | null
+          status: string
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          potential?: string | null
+          result?: Json
+          score?: number | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          potential?: string | null
+          result?: Json
+          score?: number | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      api_logs: {
+        Row: {
+          analysis_id: string | null
+          created_at: string
+          duration_ms: number | null
+          endpoint: string
+          error: string | null
+          id: string
+          metadata: Json
+          method: string | null
+          status_code: number | null
+          user_id: string
+        }
+        Insert: {
+          analysis_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          endpoint: string
+          error?: string | null
+          id?: string
+          metadata?: Json
+          method?: string | null
+          status_code?: number | null
+          user_id: string
+        }
+        Update: {
+          analysis_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          endpoint?: string
+          error?: string | null
+          id?: string
+          metadata?: Json
+          method?: string | null
+          status_code?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_logs_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      instagram_connections: {
+        Row: {
+          account_type: string | null
+          connected_at: string
+          created_at: string
+          followers: number | null
+          id: string
+          instagram_user_id: string
+          media_count: number | null
+          name: string | null
+          profile_picture: string | null
+          token_expires_at: string | null
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          account_type?: string | null
+          connected_at?: string
+          created_at?: string
+          followers?: number | null
+          id?: string
+          instagram_user_id: string
+          media_count?: number | null
+          name?: string | null
+          profile_picture?: string | null
+          token_expires_at?: string | null
+          updated_at?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          account_type?: string | null
+          connected_at?: string
+          created_at?: string
+          followers?: number | null
+          id?: string
+          instagram_user_id?: string
+          media_count?: number | null
+          name?: string | null
+          profile_picture?: string | null
+          token_expires_at?: string | null
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          analysis_id: string | null
+          content: Json
+          created_at: string
+          id: string
+          summary: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          analysis_id?: string | null
+          content?: Json
+          created_at?: string
+          id?: string
+          summary?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          analysis_id?: string | null
+          content?: Json
+          created_at?: string
+          id?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

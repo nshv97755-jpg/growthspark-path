@@ -1,12 +1,14 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Mail, Lock, User, ArrowRight, ArrowLeft } from "lucide-react";
+import { Mail, Lock, User, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { AuroraBackground } from "@/components/aurora-background";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -19,15 +21,49 @@ type Mode = "login" | "signup" | "forgot";
 
 function AuthPage() {
   const [mode, setMode] = useState<Mode>("login");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
   const navigate = useNavigate();
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (mode === "forgot") {
-      setMode("login");
-      return;
+    if (busy) return;
+    setBusy(true);
+    try {
+      if (mode === "forgot") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/auth`,
+        });
+        if (error) throw error;
+        toast.success("Reset link sent — check your inbox");
+        setMode("login");
+        return;
+      }
+
+      if (mode === "signup") {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/dashboard`,
+            data: { full_name: name },
+          },
+        });
+        if (error) throw error;
+        toast.success("Account created — welcome to GrowthPilot");
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        toast.success("Welcome back");
+      }
+      navigate({ to: "/dashboard" });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setBusy(false);
     }
-    navigate({ to: "/dashboard" });
   };
 
   return (
@@ -84,9 +120,23 @@ function AuthPage() {
 
             <form onSubmit={submit} className="space-y-4">
               {mode === "signup" && (
-                <Field icon={User} label="Full name" placeholder="Alex Carter" type="text" />
+                <Field
+                  icon={User}
+                  label="Full name"
+                  placeholder="Alex Carter"
+                  type="text"
+                  value={name}
+                  onChange={setName}
+                />
               )}
-              <Field icon={Mail} label="Email" placeholder="you@example.com" type="email" />
+              <Field
+                icon={Mail}
+                label="Email"
+                placeholder="you@example.com"
+                type="email"
+                value={email}
+                onChange={setEmail}
+              />
               {mode !== "forgot" && (
                 <div>
                   <div className="flex items-center justify-between">
@@ -103,16 +153,32 @@ function AuthPage() {
                   </div>
                   <div className="relative mt-1.5">
                     <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input type="password" placeholder="••••••••" className="pl-9" required />
+                    <Input
+                      type="password"
+                      placeholder="••••••••"
+                      className="pl-9"
+                      required
+                      minLength={6}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
                   </div>
                 </div>
               )}
 
-              <Button type="submit" variant="hero" size="lg" className="w-full">
-                {mode === "login" && "Sign in"}
-                {mode === "signup" && "Create account"}
-                {mode === "forgot" && "Send reset link"}
-                <ArrowRight className="ml-1 h-4 w-4" />
+              <Button type="submit" variant="hero" size="lg" className="w-full" disabled={busy}>
+                {busy ? (
+                  <>
+                    <Loader2 className="mr-1 h-4 w-4 animate-spin" /> Please wait…
+                  </>
+                ) : (
+                  <>
+                    {mode === "login" && "Sign in"}
+                    {mode === "signup" && "Create account"}
+                    {mode === "forgot" && "Send reset link"}
+                    <ArrowRight className="ml-1 h-4 w-4" />
+                  </>
+                )}
               </Button>
             </form>
 
@@ -154,18 +220,29 @@ function Field({
   label,
   placeholder,
   type,
+  value,
+  onChange,
 }: {
   icon: typeof Mail;
   label: string;
   placeholder: string;
   type: string;
+  value: string;
+  onChange: (v: string) => void;
 }) {
   return (
     <div>
       <Label className="text-sm text-muted-foreground">{label}</Label>
       <div className="relative mt-1.5">
         <Icon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input type={type} placeholder={placeholder} className="pl-9" required />
+        <Input
+          type={type}
+          placeholder={placeholder}
+          className="pl-9"
+          required
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
       </div>
     </div>
   );

@@ -19,6 +19,7 @@ import { ScoreRing } from "@/components/score-ring";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useInstagramConnection } from "@/hooks/use-instagram-connection";
+import { logApiCall, saveAnalysis, saveReport } from "@/lib/db";
 import { sampleAnalysis, lockedIssues, loadingMessages } from "@/lib/mock";
 
 export const Route = createFileRoute("/dashboard/analyze")({
@@ -44,7 +45,36 @@ function Analyze() {
     }
   };
 
+  // Persist the finished analysis (and its report) to Lovable Cloud.
+  const persistAnalysis = async (handle: string) => {
+    const startedAt = performance.now();
+    const clean = handle.replace(/^@/, "") || sampleAnalysis.username;
+    const analysisId = await saveAnalysis({
+      username: clean,
+      score: sampleAnalysis.growthScore,
+      potential: sampleAnalysis.growthPotential,
+      result: sampleAnalysis,
+    });
+    if (analysisId) {
+      await saveReport({
+        analysisId,
+        title: `Growth report — @${clean}`,
+        summary: `Top issue: ${sampleAnalysis.topIssue} · Potential gain ${sampleAnalysis.potentialGain}`,
+        content: sampleAnalysis,
+      });
+    }
+    await logApiCall({
+      endpoint: "instagram/analyze",
+      method: "POST",
+      statusCode: analysisId ? 200 : 401,
+      durationMs: Math.round(performance.now() - startedAt),
+      analysisId,
+      metadata: { username: clean },
+    });
+  };
+
   const connected = status === "connected";
+
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -72,7 +102,15 @@ function Analyze() {
         {connected && stage === "idle" && (
           <Idle key="idle" username={username} setUsername={setUsername} onStart={() => setStage("loading")} />
         )}
-        {stage === "loading" && <Loading key="loading" onDone={() => setStage("result")} />}
+        {stage === "loading" && (
+          <Loading
+            key="loading"
+            onDone={() => {
+              setStage("result");
+              void persistAnalysis(username);
+            }}
+          />
+        )}
         {stage === "result" && (
           <Result key="result" username={username} onReset={() => setStage("idle")} />
         )}
