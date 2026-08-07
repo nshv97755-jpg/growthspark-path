@@ -120,9 +120,23 @@ function AuthPage() {
 
             <form onSubmit={submit} className="space-y-4">
               {mode === "signup" && (
-                <Field icon={User} label="Full name" placeholder="Alex Carter" type="text" />
+                <Field
+                  icon={User}
+                  label="Full name"
+                  placeholder="Alex Carter"
+                  type="text"
+                  value={name}
+                  onChange={setName}
+                />
               )}
-              <Field icon={Mail} label="Email" placeholder="you@example.com" type="email" />
+              <Field
+                icon={Mail}
+                label="Email"
+                placeholder="you@example.com"
+                type="email"
+                value={email}
+                onChange={setEmail}
+              />
               {mode !== "forgot" && (
                 <div>
                   <div className="flex items-center justify-between">
@@ -139,16 +153,32 @@ function AuthPage() {
                   </div>
                   <div className="relative mt-1.5">
                     <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input type="password" placeholder="••••••••" className="pl-9" required />
+                    <Input
+                      type="password"
+                      placeholder="••••••••"
+                      className="pl-9"
+                      required
+                      minLength={6}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
                   </div>
                 </div>
               )}
 
-              <Button type="submit" variant="hero" size="lg" className="w-full">
-                {mode === "login" && "Sign in"}
-                {mode === "signup" && "Create account"}
-                {mode === "forgot" && "Send reset link"}
-                <ArrowRight className="ml-1 h-4 w-4" />
+              <Button type="submit" variant="hero" size="lg" className="w-full" disabled={busy}>
+                {busy ? (
+                  <>
+                    <Loader2 className="mr-1 h-4 w-4 animate-spin" /> Please wait…
+                  </>
+                ) : (
+                  <>
+                    {mode === "login" && "Sign in"}
+                    {mode === "signup" && "Create account"}
+                    {mode === "forgot" && "Send reset link"}
+                    <ArrowRight className="ml-1 h-4 w-4" />
+                  </>
+                )}
               </Button>
             </form>
 
