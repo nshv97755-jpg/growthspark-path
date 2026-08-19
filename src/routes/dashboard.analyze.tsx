@@ -322,7 +322,7 @@ function Result({ username, onReset }: { username: string; onReset: () => void }
           <div className="flex items-center gap-4">
             <img
               src={a.avatar}
-              alt={a.username}
+              alt={`Profile picture of Instagram creator @${a.username}`}
               className="h-16 w-16 rounded-2xl border border-border"
             />
             <div>
