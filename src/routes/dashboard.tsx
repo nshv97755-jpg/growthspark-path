@@ -16,7 +16,15 @@ import {
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export const Route = createFileRoute("/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — GrowthPilot" }] }),
+  head: () => ({
+    meta: [
+      { title: "Dashboard — GrowthPilot" },
+      { name: "description", content: "Your GrowthPilot dashboard: growth score trends, recent profile analyses and next actions for your creator account." },
+      { property: "og:title", content: "Dashboard — GrowthPilot" },
+      { property: "og:description", content: "Your GrowthPilot dashboard: growth score trends, recent profile analyses and next actions for your creator account." },
+      { property: "og:url", content: "https://growthspark-path.lovable.app/dashboard" },
+    ],
+  }),
   component: DashboardLayout,
 });
 

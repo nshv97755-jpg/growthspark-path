@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as DataDeletionRouteImport } from './routes/data-deletion'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -26,6 +27,11 @@ import { Route as DashboardAnalyzeRouteImport } from './routes/dashboard.analyze
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteWithChildren
   '/data-deletion': typeof DataDeletionRoute
   '/privacy': typeof PrivacyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/dashboard/analyze': typeof DashboardAnalyzeRoute
   '/dashboard/billing': typeof DashboardBillingRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/data-deletion': typeof DataDeletionRoute
   '/privacy': typeof PrivacyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/dashboard/analyze': typeof DashboardAnalyzeRoute
   '/dashboard/billing': typeof DashboardBillingRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteWithChildren
   '/data-deletion': typeof DataDeletionRoute
   '/privacy': typeof PrivacyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/dashboard/analyze': typeof DashboardAnalyzeRoute
   '/dashboard/billing': typeof DashboardBillingRoute
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/data-deletion'
     | '/privacy'
+    | '/sitemap.xml'
     | '/terms'
     | '/dashboard/analyze'
     | '/dashboard/billing'
@@ -156,6 +166,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/data-deletion'
     | '/privacy'
+    | '/sitemap.xml'
     | '/terms'
     | '/dashboard/analyze'
     | '/dashboard/billing'
@@ -171,6 +182,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/data-deletion'
     | '/privacy'
+    | '/sitemap.xml'
     | '/terms'
     | '/dashboard/analyze'
     | '/dashboard/billing'
@@ -187,6 +199,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRouteWithChildren
   DataDeletionRoute: typeof DataDeletionRoute
   PrivacyRoute: typeof PrivacyRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
 }
 
@@ -197,6 +210,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -316,6 +336,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRouteWithChildren,
   DataDeletionRoute: DataDeletionRoute,
   PrivacyRoute: PrivacyRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport

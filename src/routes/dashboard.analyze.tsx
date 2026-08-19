@@ -23,7 +23,15 @@ import { logApiCall, saveAnalysis, saveReport } from "@/lib/db";
 import { sampleAnalysis, lockedIssues, loadingMessages } from "@/lib/mock";
 
 export const Route = createFileRoute("/dashboard/analyze")({
-  head: () => ({ meta: [{ title: "Analyze Profile — GrowthPilot" }] }),
+  head: () => ({
+    meta: [
+      { title: "Analyze Profile — GrowthPilot" },
+      { name: "description", content: "Connect Instagram and run an AI analysis of your creator profile to find the exact issues capping your reach and growth." },
+      { property: "og:title", content: "Analyze Profile — GrowthPilot" },
+      { property: "og:description", content: "Connect Instagram and run an AI analysis of your creator profile to find the exact issues capping your reach and growth." },
+      { property: "og:url", content: "https://growthspark-path.lovable.app/dashboard/analyze" },
+    ],
+  }),
   component: Analyze,
 });
 

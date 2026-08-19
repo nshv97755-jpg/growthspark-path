@@ -12,7 +12,13 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
-    meta: [{ title: "Sign in — GrowthPilot" }],
+    meta: [
+      { title: "Sign in — GrowthPilot" },
+      { name: "description", content: "Sign in to GrowthPilot to analyze your creator profile and view your personalized social media growth reports." },
+      { property: "og:title", content: "Sign in — GrowthPilot" },
+      { property: "og:description", content: "Sign in to GrowthPilot to analyze your creator profile and view your growth reports." },
+      { property: "og:url", content: "https://growthspark-path.lovable.app/auth" },
+    ],
   }),
   component: AuthPage,
 });
