@@ -11,7 +11,15 @@ import { listAnalyses } from "@/lib/db";
 import { historyItems } from "@/lib/mock";
 
 export const Route = createFileRoute("/dashboard/history")({
-  head: () => ({ meta: [{ title: "History — GrowthPilot" }] }),
+  head: () => ({
+    meta: [
+      { title: "Analysis History — GrowthPilot" },
+      { name: "description", content: "Browse every profile analysis you have run in GrowthPilot and track how your growth score changes over time." },
+      { property: "og:title", content: "Analysis History — GrowthPilot" },
+      { property: "og:description", content: "Browse every profile analysis you have run in GrowthPilot and track how your growth score changes over time." },
+      { property: "og:url", content: "https://growthspark-path.lovable.app/dashboard/history" },
+    ],
+  }),
   component: HistoryPage,
 });
 

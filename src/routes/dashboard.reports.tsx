@@ -8,7 +8,15 @@ import { Button } from "@/components/ui/button";
 import { historyItems } from "@/lib/mock";
 
 export const Route = createFileRoute("/dashboard/reports")({
-  head: () => ({ meta: [{ title: "Reports — GrowthPilot" }] }),
+  head: () => ({
+    meta: [
+      { title: "Reports — GrowthPilot" },
+      { name: "description", content: "All of your saved GrowthPilot premium reports in one place, ready to review, revisit and act on." },
+      { property: "og:title", content: "Reports — GrowthPilot" },
+      { property: "og:description", content: "All of your saved GrowthPilot premium reports in one place, ready to review, revisit and act on." },
+      { property: "og:url", content: "https://growthspark-path.lovable.app/dashboard/reports" },
+    ],
+  }),
   component: Reports,
 });
 

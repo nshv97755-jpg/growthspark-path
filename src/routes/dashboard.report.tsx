@@ -41,7 +41,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { reportData, sampleAnalysis } from "@/lib/mock";
 
 export const Route = createFileRoute("/dashboard/report")({
-  head: () => ({ meta: [{ title: "Premium Report — GrowthPilot" }] }),
+  head: () => ({
+    meta: [
+      { title: "Premium Report — GrowthPilot" },
+      { name: "description", content: "Your full GrowthPilot report: growth score breakdown, blockers found and a prioritized playbook of fixes for your profile." },
+      { property: "og:title", content: "Premium Report — GrowthPilot" },
+      { property: "og:description", content: "Your full GrowthPilot report: growth score breakdown, blockers found and a prioritized playbook of fixes for your profile." },
+      { property: "og:url", content: "https://growthspark-path.lovable.app/dashboard/report" },
+    ],
+  }),
   component: ReportPage,
 });
 

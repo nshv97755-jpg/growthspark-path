@@ -8,7 +8,15 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
 export const Route = createFileRoute("/dashboard/settings")({
-  head: () => ({ meta: [{ title: "Settings — GrowthPilot" }] }),
+  head: () => ({
+    meta: [
+      { title: "Settings — GrowthPilot" },
+      { name: "description", content: "Update your GrowthPilot profile details, notification preferences, language and appearance settings." },
+      { property: "og:title", content: "Settings — GrowthPilot" },
+      { property: "og:description", content: "Update your GrowthPilot profile details, notification preferences, language and appearance settings." },
+      { property: "og:url", content: "https://growthspark-path.lovable.app/dashboard/settings" },
+    ],
+  }),
   component: Settings,
 });
 

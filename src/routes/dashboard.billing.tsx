@@ -5,7 +5,15 @@ import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/dashboard/billing")({
-  head: () => ({ meta: [{ title: "Billing — GrowthPilot" }] }),
+  head: () => ({
+    meta: [
+      { title: "Billing — GrowthPilot" },
+      { name: "description", content: "Manage your GrowthPilot plan, compare Free, Pro, God Mode and Founder's Pass tiers, and update payment details." },
+      { property: "og:title", content: "Billing — GrowthPilot" },
+      { property: "og:description", content: "Manage your GrowthPilot plan, compare Free, Pro, God Mode and Founder's Pass tiers, and update payment details." },
+      { property: "og:url", content: "https://growthspark-path.lovable.app/dashboard/billing" },
+    ],
+  }),
   component: Billing,
 });
 

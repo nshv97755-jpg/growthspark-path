@@ -1,0 +1,12 @@
+# GrowthPilot
+
+> AI growth diagnostics for social media creators — find out exactly why your profile isn't growing and what to fix.
+
+GrowthPilot analyzes a creator's public Instagram signals (bio, posting cadence, engagement patterns, niche fit, format mix), benchmarks them against top performers, and returns a Growth Score with a prioritized fix list and premium report.
+
+## Pages
+
+- [Home](/): Product overview, features, pricing tiers and FAQ.
+- [Privacy Policy](/privacy): How GrowthPilot collects, uses and protects data.
+- [Terms of Service](/terms): Terms governing use of GrowthPilot.
+- [Data Deletion](/data-deletion): How to request deletion of your account data.
