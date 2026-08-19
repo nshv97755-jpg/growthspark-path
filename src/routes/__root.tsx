@@ -95,9 +95,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "GrowthPilot — Discover Why You're Not Growing" },
-      { name: "description", content: "GrowthPilot AI analyzes social media profiles to reveal growth blockers and provide actionable strategies." },
-      { property: "og:description", content: "GrowthPilot AI analyzes social media profiles to reveal growth blockers and provide actionable strategies." },
       { name: "twitter:description", content: "GrowthPilot AI analyzes social media profiles to reveal growth blockers and provide actionable strategies." },
+      { property: "og:site_name", content: "GrowthPilot" },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/d1tC3nbaspcat7r9JglGXyJAUvg1/social-images/social-1782629909666-ChatGPT_Image_Jun_21,_2026_at_11_35_58_AM.webp" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/d1tC3nbaspcat7r9JglGXyJAUvg1/social-images/social-1782629909666-ChatGPT_Image_Jun_21,_2026_at_11_35_58_AM.webp" },
     ],
@@ -108,6 +107,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Geist:wght@300;400;500;600;700&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "GrowthPilot",
+          url: "https://growthspark-path.lovable.app",
+          description:
+            "AI growth diagnostics for social media creators, revealing why a profile is not growing.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "GrowthPilot",
+          url: "https://growthspark-path.lovable.app",
+        }),
       },
     ],
   }),
