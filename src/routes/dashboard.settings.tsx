@@ -40,7 +40,7 @@ function Settings() {
     <div className="max-w-3xl space-y-6">
       <Reveal>
         <form onSubmit={saveProfile} className="rounded-3xl glass p-6 sm:p-8">
-          <h3 className="font-display text-lg font-semibold">Profile</h3>
+          <h2 className="font-display text-lg font-semibold">Profile</h2>
           <div className="mt-6 flex items-center gap-4">
             <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand text-xl font-bold text-primary-foreground">
               {name.trim().charAt(0).toUpperCase() || "A"}
@@ -83,7 +83,7 @@ function Settings() {
 
       <Reveal>
         <div className="rounded-3xl glass p-6 sm:p-8">
-          <h3 className="font-display text-lg font-semibold">Notifications</h3>
+          <h2 className="font-display text-lg font-semibold">Notifications</h2>
           <div className="mt-5 space-y-4">
             {toggles.map((t) => (
               <div key={t.label} className="flex items-center justify-between gap-4">
@@ -106,7 +106,7 @@ function Settings() {
 
       <Reveal>
         <div className="rounded-3xl glass p-6 sm:p-8">
-          <h3 className="font-display text-lg font-semibold">Appearance</h3>
+          <h2 className="font-display text-lg font-semibold">Appearance</h2>
           <div className="mt-5 flex items-center justify-between gap-4">
             <div>
               <Label htmlFor="dark-mode" className="text-sm font-medium">Dark mode</Label>
