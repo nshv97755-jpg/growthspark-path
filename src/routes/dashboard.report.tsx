@@ -40,6 +40,29 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { reportData, sampleAnalysis } from "@/lib/mock";
 
+function useStoredReport() {
+  const [state, setState] = useState<{
+    username: string;
+    data: typeof reportData;
+  } | null>(null);
+
+  useEffect(() => {
+    const raw = sessionStorage.getItem("gp_report");
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed?.data) {
+          setState({ username: parsed.username, data: parsed.data });
+        }
+      } catch {
+        setState(null);
+      }
+    }
+  }, []);
+
+  return state;
+}
+
 export const Route = createFileRoute("/dashboard/report")({
   head: () => ({
     meta: [
@@ -110,6 +133,9 @@ function ReportPage() {
 }
 
 function ReportContent() {
+  const stored = useStoredReport();
+  const username = stored?.username ?? sampleAnalysis.username;
+  const data = stored?.data ?? reportData;
   const [pdfOpen, setPdfOpen] = useState(false);
   return (
     <div className="mx-auto max-w-5xl space-y-8">
@@ -124,7 +150,7 @@ function ReportContent() {
             <TrendingUp className="h-3.5 w-3.5" /> Full report unlocked
           </span>
           <h2 className="mt-4 font-display text-3xl font-bold">
-            Growth report for <span className="text-gradient">@{sampleAnalysis.username}</span>
+            Growth report for <span className="text-gradient">@{username}</span>
           </h2>
           <p className="mt-2 max-w-xl text-muted-foreground">
             Your complete, personalized playbook to break the plateau and scale.
@@ -172,13 +198,13 @@ function ReportContent() {
 
       {/* Why not growing */}
       <Section icon={Lightbulb} title="Why You're Not Growing">
-        <p className="leading-relaxed text-muted-foreground">{reportData.whyNotGrowing}</p>
+        <p className="leading-relaxed text-muted-foreground">{data.whyNotGrowing}</p>
       </Section>
 
       {/* Top 5 mistakes */}
       <Section icon={AlertTriangle} title="Top 5 Mistakes">
         <div className="grid gap-4 sm:grid-cols-2">
-          {reportData.mistakes.map((m, i) => (
+          {data.mistakes.map((m, i) => (
             <div key={m.title} className="rounded-2xl bg-secondary/50 p-5">
               <span className="font-display text-2xl font-bold text-gradient">0{i + 1}</span>
               <h4 className="mt-2 font-semibold">{m.title}</h4>
@@ -191,7 +217,7 @@ function ReportContent() {
       {/* Recommendations */}
       <Section icon={ListChecks} title="Personalized Recommendations">
         <ul className="space-y-3">
-          {reportData.recommendations.map((r, i) => (
+          {data.recommendations.map((r, i) => (
             <li key={i} className="flex items-start gap-3 rounded-xl bg-secondary/50 px-4 py-3">
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-semibold text-primary-foreground">
                 {i + 1}
@@ -209,14 +235,14 @@ function ReportContent() {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={reportData.strategy}
+                  data={data.strategy}
                   dataKey="share"
                   nameKey="pillar"
                   innerRadius={50}
                   outerRadius={80}
                   paddingAngle={3}
                 >
-                  {reportData.strategy.map((_, i) => (
+                  {data.strategy.map((_, i) => (
                     <Cell key={i} fill={pieColors[i % pieColors.length]} stroke="none" />
                   ))}
                 </Pie>
@@ -233,7 +259,7 @@ function ReportContent() {
             </ResponsiveContainer>
           </div>
           <div className="space-y-3">
-            {reportData.strategy.map((s, i) => (
+            {data.strategy.map((s, i) => (
               <div key={s.pillar} className="flex items-center justify-between">
                 <span className="flex items-center gap-2 text-sm">
                   <span
@@ -253,7 +279,7 @@ function ReportContent() {
       {/* 7-day plan */}
       <Section icon={CalendarDays} title="7-Day Growth Plan">
         <div className="grid gap-3 sm:grid-cols-2">
-          {reportData.weekPlan.map((d) => (
+          {data.weekPlan.map((d) => (
             <div key={d.day} className="flex items-start gap-3 rounded-xl bg-secondary/50 p-4">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand text-xs font-bold text-primary-foreground">
                 {d.day}
@@ -273,7 +299,7 @@ function ReportContent() {
       <Section icon={TrendingUp} title="Growth Forecast">
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={reportData.forecast}>
+            <AreaChart data={data.forecast}>
               <defs>
                 <linearGradient id="repArea" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#fb923c" stopOpacity={0.45} />
@@ -302,7 +328,7 @@ function ReportContent() {
       {/* 30 content ideas */}
       <Section icon={Lightbulb} title="30 Content Ideas">
         <div className="grid gap-2 sm:grid-cols-2">
-          {reportData.contentIdeas.map((idea, i) => (
+          {data.contentIdeas.map((idea, i) => (
             <div key={i} className="flex items-start gap-2.5 rounded-lg bg-secondary/40 px-3 py-2 text-sm">
               <span className="text-xs font-semibold text-accent">{String(i + 1).padStart(2, "0")}</span>
               {idea}
@@ -314,7 +340,7 @@ function ReportContent() {
       {/* Captions */}
       <Section icon={Quote} title="10 Viral Caption Ideas">
         <div className="space-y-3">
-          {reportData.captions.map((c, i) => (
+          {data.captions.map((c, i) => (
             <div key={i} className="rounded-xl bg-secondary/50 p-4 text-sm italic text-foreground/90">
               "{c}"
             </div>
@@ -325,7 +351,7 @@ function ReportContent() {
       {/* Hashtags */}
       <Section icon={Hash} title="Hashtag Suggestions">
         <div className="flex flex-wrap gap-2">
-          {reportData.hashtags.map((h) => (
+          {data.hashtags.map((h) => (
             <span key={h} className="rounded-full glass px-3.5 py-1.5 text-sm text-accent">
               {h}
             </span>
@@ -336,7 +362,7 @@ function ReportContent() {
       {/* Competitors */}
       <Section icon={Users} title="Competitor Suggestions">
         <div className="grid gap-4 sm:grid-cols-3">
-          {reportData.competitors.map((c) => (
+          {data.competitors.map((c) => (
             <div key={c.name} className="rounded-2xl bg-secondary/50 p-5 text-center">
               <span className="flex h-12 w-12 mx-auto items-center justify-center rounded-full bg-brand font-semibold text-primary-foreground">
                 {c.name[1].toUpperCase()}

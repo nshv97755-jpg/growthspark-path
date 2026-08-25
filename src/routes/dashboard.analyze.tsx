@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import {
@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { useInstagramConnection } from "@/hooks/use-instagram-connection";
 import { logApiCall, saveAnalysis, saveReport } from "@/lib/db";
 import { sampleAnalysis, lockedIssues, loadingMessages } from "@/lib/mock";
+import { generateGrowthReport, type GeneratedReport } from "@/lib/groq/generate-report";
 
 export const Route = createFileRoute("/dashboard/analyze")({
   head: () => ({
@@ -40,7 +41,35 @@ type Stage = "idle" | "loading" | "result";
 function Analyze() {
   const [stage, setStage] = useState<Stage>("idle");
   const [username, setUsername] = useState("");
-  const { status, connect } = useInstagramConnection();
+  const [aiData, setAiData] = useState<GeneratedReport | null>(null);
+  const [genError, setGenError] = useState<string | null>(null);
+  const aiPromiseRef = useRef<Promise<GeneratedReport | null> | null>(null);
+  const { status, connection, connect } = useInstagramConnection();
+
+  const startGeneration = (handle: string) => {
+    setAiData(null);
+    setGenError(null);
+    const p = generateGrowthReport({
+      data: {
+        username: handle,
+        followers: connection?.followers,
+        mediaCount: connection?.mediaCount,
+        accountType: connection?.accountType,
+        name: connection?.name,
+      },
+    })
+      .then((res) => {
+        setAiData(res);
+        return res;
+      })
+      .catch((err) => {
+        const message = err instanceof Error ? err.message : "Couldn't generate report";
+        setGenError(message);
+        return null;
+      });
+    aiPromiseRef.current = p;
+    return p;
+  };
 
   const handleConnect = async () => {
     try {
@@ -48,41 +77,48 @@ function Analyze() {
       setUsername(c.username);
       toast.success(`Instagram connected — @${c.username}`);
       setStage("loading");
+      startGeneration(c.username);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Couldn't connect Instagram");
     }
   };
 
-  // Persist the finished analysis (and its report) to Lovable Cloud.
-  const persistAnalysis = async (handle: string) => {
+  const persistAnalysis = async (handle: string, data: GeneratedReport | null) => {
     const startedAt = performance.now();
     const clean = handle.replace(/^@/, "") || sampleAnalysis.username;
+    const result = data ?? sampleAnalysis;
     const analysisId = await saveAnalysis({
       username: clean,
-      score: sampleAnalysis.growthScore,
-      potential: sampleAnalysis.growthPotential,
-      result: sampleAnalysis,
+      score: data?.growthScore ?? sampleAnalysis.growthScore,
+      potential: data?.growthPotential ?? sampleAnalysis.growthPotential,
+      result,
     });
     if (analysisId) {
       await saveReport({
         analysisId,
         title: `Growth report — @${clean}`,
-        summary: `Top issue: ${sampleAnalysis.topIssue} · Potential gain ${sampleAnalysis.potentialGain}`,
-        content: sampleAnalysis,
+        summary: `Top issue: ${data?.topIssue ?? sampleAnalysis.topIssue}`,
+        content: data,
       });
     }
     await logApiCall({
       endpoint: "instagram/analyze",
       method: "POST",
-      statusCode: analysisId ? 200 : 401,
+      statusCode: data ? 200 : 500,
       durationMs: Math.round(performance.now() - startedAt),
       analysisId,
       metadata: { username: clean },
     });
+
+    if (data) {
+      sessionStorage.setItem(
+        "gp_report",
+        JSON.stringify({ username: clean, connection, data }),
+      );
+    }
   };
 
   const connected = status === "connected";
-
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -108,19 +144,34 @@ function Analyze() {
         )}
 
         {connected && stage === "idle" && (
-          <Idle key="idle" username={username} setUsername={setUsername} onStart={() => setStage("loading")} />
+          <Idle
+            key="idle"
+            username={username}
+            setUsername={setUsername}
+            onStart={() => {
+              setStage("loading");
+              startGeneration(username.trim().replace(/^@/, ""));
+            }}
+          />
         )}
         {stage === "loading" && (
           <Loading
             key="loading"
+            waitFor={aiPromiseRef.current}
             onDone={() => {
               setStage("result");
-              void persistAnalysis(username);
+              void persistAnalysis(username, aiData);
             }}
           />
         )}
         {stage === "result" && (
-          <Result key="result" username={username} onReset={() => setStage("idle")} />
+          <Result
+            key="result"
+            username={username}
+            aiData={aiData}
+            genError={genError}
+            onReset={() => setStage("idle")}
+          />
         )}
       </AnimatePresence>
     </div>
@@ -245,17 +296,27 @@ function Idle({
   );
 }
 
-function Loading({ onDone }: { onDone: () => void }) {
+function Loading({
+  onDone,
+  waitFor,
+}: {
+  onDone: () => void;
+  waitFor: Promise<unknown> | null;
+}) {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
     if (step >= loadingMessages.length) {
-      const t = setTimeout(onDone, 500);
+      const t = setTimeout(() => {
+        Promise.resolve(waitFor)
+          .catch(() => {})
+          .finally(onDone);
+      }, 400);
       return () => clearTimeout(t);
     }
     const t = setTimeout(() => setStep((s) => s + 1), 850);
     return () => clearTimeout(t);
-  }, [step, onDone]);
+  }, [step, onDone, waitFor]);
 
   const progress = Math.min((step / loadingMessages.length) * 100, 100);
 
@@ -304,11 +365,33 @@ function Loading({ onDone }: { onDone: () => void }) {
   );
 }
 
-function Result({ username, onReset }: { username: string; onReset: () => void }) {
+function Result({
+  username,
+  aiData,
+  genError,
+  onReset,
+}: {
+  username: string;
+  aiData: GeneratedReport | null;
+  genError: string | null;
+  onReset: () => void;
+}) {
   const navigate = useNavigate();
   const handle = username.trim().replace(/^@/, "") || sampleAnalysis.username;
-  const a = { ...sampleAnalysis, username: handle };
 
+  const a = aiData
+    ? {
+        ...sampleAnalysis,
+        username: handle,
+        growthScore: aiData.growthScore,
+        growthPotential: aiData.growthPotential,
+        issuesFound: aiData.issuesFound,
+        topIssue: aiData.topIssue,
+        potentialGain: aiData.potentialGain,
+        niche: aiData.niche,
+        categories: aiData.categories,
+      }
+    : { ...sampleAnalysis, username: handle };
 
   return (
     <motion.div
@@ -324,8 +407,13 @@ function Result({ username, onReset }: { username: string; onReset: () => void }
         </Button>
       </div>
 
+      {genError && (
+        <div className="rounded-2xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
+          Couldn't generate a real AI report ({genError}) — showing a sample instead.
+        </div>
+      )}
+
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Profile card */}
         <div className="rounded-3xl glass p-6 lg:col-span-1">
           <div className="flex items-center gap-4">
             <img
@@ -354,7 +442,6 @@ function Result({ username, onReset }: { username: string; onReset: () => void }
           </div>
         </div>
 
-        {/* Score */}
         <div className="flex flex-col items-center justify-center rounded-3xl glass-strong p-6 lg:col-span-1">
           <ScoreRing value={a.growthScore} />
           <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-success/15 px-3 py-1 text-sm font-medium text-success">
@@ -362,7 +449,6 @@ function Result({ username, onReset }: { username: string; onReset: () => void }
           </span>
         </div>
 
-        {/* Quick stats */}
         <div className="grid grid-cols-2 gap-4 lg:col-span-1">
           <MiniStat icon={AlertTriangle} label="Issues Found" value={String(a.issuesFound)} tone="warning" />
           <MiniStat icon={TrendingUp} label="Growth Potential" value={a.growthPotential} tone="success" />
@@ -371,7 +457,6 @@ function Result({ username, onReset }: { username: string; onReset: () => void }
         </div>
       </div>
 
-      {/* Category scores */}
       <div className="rounded-3xl glass p-6">
         <h3 className="font-display text-lg font-semibold">Category scores</h3>
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
@@ -395,7 +480,6 @@ function Result({ username, onReset }: { username: string; onReset: () => void }
         </div>
       </div>
 
-      {/* Locked issues */}
       <div className="relative overflow-hidden rounded-3xl glass-strong p-6">
         <div className="flex items-center justify-between">
           <h3 className="font-display text-lg font-semibold">
@@ -407,7 +491,7 @@ function Result({ username, onReset }: { username: string; onReset: () => void }
         </div>
 
         <div className="relative mt-5 space-y-3">
-          {lockedIssues.map((issue, i) => {
+          {(aiData?.mistakes.map((m) => m.title) ?? lockedIssues).map((issue, i) => {
             const revealed = i === 0;
             return (
               <div
@@ -433,7 +517,6 @@ function Result({ username, onReset }: { username: string; onReset: () => void }
             );
           })}
 
-          {/* fade + CTA overlay */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-card to-transparent" />
         </div>
 
