@@ -137,8 +137,16 @@ function ReportContent() {
   const username = stored?.username ?? sampleAnalysis.username;
   const data = stored?.data ?? reportData;
   const [pdfOpen, setPdfOpen] = useState(false);
+
+  const handleExportPdf = () => {
+    const prevTitle = document.title;
+    document.title = `GrowthPilot report — @${username}`;
+    window.print();
+    document.title = prevTitle;
+  };
+
   return (
-    <div className="mx-auto max-w-5xl space-y-8">
+    <div data-print-area className="mx-auto max-w-5xl space-y-8">
       {/* Header */}
       <Reveal>
         <div className="relative overflow-hidden rounded-3xl glass-strong p-8 shadow-card">
@@ -155,8 +163,8 @@ function ReportContent() {
           <p className="mt-2 max-w-xl text-muted-foreground">
             Your complete, personalized playbook to break the plateau and scale.
           </p>
-          <div className="mt-6 flex flex-wrap gap-2">
-            <Button variant="hero" size="sm" onClick={() => setPdfOpen(true)}>
+          <div data-print-hide className="mt-6 flex flex-wrap gap-2">
+            <Button variant="hero" size="sm" onClick={handleExportPdf}>
               <Download className="mr-1 h-4 w-4" /> Export PDF
             </Button>
             <Button variant="glass" size="sm" onClick={() => toast.success("Report saved to your library")}>

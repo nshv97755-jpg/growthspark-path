@@ -313,3 +313,31 @@
   background: radial-gradient(closest-side, rgba(249, 115, 22, 0.55), rgba(249, 115, 22, 0.18) 45%, rgba(249, 115, 22, 0.04) 70%, transparent 100%);
   filter: blur(60px);
 }
+
+/* Print styles for PDF report export (Cmd/Ctrl+P -> Save as PDF) */
+@media print {
+  [data-print-hide] {
+    display: none !important;
+  }
+  [data-print-area] {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  body, .bg-background {
+    background: white !important;
+    color: black !important;
+  }
+  .glass, .glass-strong {
+    background: white !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+  * {
+    color: black !important;
+  }
+  a[href]::after {
+    content: "" !important;
+  }
+}

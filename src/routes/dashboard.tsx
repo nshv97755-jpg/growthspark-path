@@ -59,9 +59,11 @@ function DashboardLayout() {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <DashboardSidebar />
+      <div data-print-hide>
+        <DashboardSidebar />
+      </div>
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/70 px-4 py-3 backdrop-blur-xl sm:px-8">
+        <header data-print-hide className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/70 px-4 py-3 backdrop-blur-xl sm:px-8">
           <div className="flex items-center gap-3">
             <MobileNav />
             <h1 className="font-display text-lg font-semibold capitalize">{title}</h1>
