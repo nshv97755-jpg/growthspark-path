@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { toast } from "sonner";
 import {
@@ -17,6 +17,7 @@ import {
   TrendingUp,
   Sparkles,
   Rocket,
+  Loader2,
 } from "lucide-react";
 import {
   Area,
@@ -132,21 +133,96 @@ function ReportPage() {
   return <ReportContent />;
 }
 
+interface Html2PdfInstance {
+  set: (opts: Record<string, unknown>) => Html2PdfInstance;
+  from: (el: HTMLElement) => Html2PdfInstance;
+  save: () => Promise<void>;
+}
+
+declare global {
+  interface Window {
+    html2pdf?: () => Html2PdfInstance;
+  }
+}
+
+let html2pdfLoader: Promise<NonNullable<Window["html2pdf"]>> | null = null;
+
+function loadHtml2Pdf() {
+  if (typeof window === "undefined") {
+    return Promise.reject(new Error("html2pdf can only run in the browser"));
+  }
+  if (window.html2pdf) return Promise.resolve(window.html2pdf);
+  if (!html2pdfLoader) {
+    html2pdfLoader = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src =
+        "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.3/html2pdf.bundle.min.js";
+      script.async = true;
+      script.onload = () => {
+        if (window.html2pdf) resolve(window.html2pdf);
+        else reject(new Error("html2pdf loaded but not found on window"));
+      };
+      script.onerror = () => reject(new Error("Failed to load PDF generator"));
+      document.head.appendChild(script);
+    });
+  }
+  return html2pdfLoader;
+}
+
 function ReportContent() {
   const stored = useStoredReport();
   const username = stored?.username ?? sampleAnalysis.username;
   const data = stored?.data ?? reportData;
   const [pdfOpen, setPdfOpen] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const reportRef = useRef<HTMLDivElement>(null);
 
-  const handleExportPdf = () => {
-    const prevTitle = document.title;
-    document.title = `GrowthPilot report — @${username}`;
-    window.print();
-    document.title = prevTitle;
+  const handleExportPdf = async () => {
+    const node = reportRef.current;
+    if (!node || exporting) return;
+
+    setExporting(true);
+    const toastId = toast.loading("Generating your PDF…");
+
+    // Temporarily switch the report to a light, print-friendly theme so the
+    // exported PDF is readable on paper/screen instead of the dark glass UI.
+    node.classList.add("pdf-export-mode");
+    document.querySelectorAll("[data-print-hide]").forEach((el) => {
+      (el as HTMLElement).style.visibility = "hidden";
+    });
+
+    try {
+      const html2pdf = await loadHtml2Pdf();
+      await html2pdf()
+        .set({
+          margin: 10,
+          filename: `growthpilot-report-${username}.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            backgroundColor: "#ffffff",
+            useCORS: true,
+          },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+          pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+        })
+        .from(node)
+        .save();
+      toast.success("PDF downloaded", { id: toastId });
+    } catch (err) {
+      console.error("[handleExportPdf] failed:", err);
+      toast.error("Couldn't generate the PDF. Please try again.", { id: toastId });
+    } finally {
+      node.classList.remove("pdf-export-mode");
+      document.querySelectorAll("[data-print-hide]").forEach((el) => {
+        (el as HTMLElement).style.visibility = "";
+      });
+      setExporting(false);
+    }
   };
 
   return (
-    <div data-print-area className="mx-auto max-w-5xl space-y-8">
+    <div ref={reportRef} data-print-area className="mx-auto max-w-5xl space-y-8">
       {/* Header */}
       <Reveal>
         <div className="relative overflow-hidden rounded-3xl glass-strong p-8 shadow-card">
@@ -164,8 +240,13 @@ function ReportContent() {
             Your complete, personalized playbook to break the plateau and scale.
           </p>
           <div data-print-hide className="mt-6 flex flex-wrap gap-2">
-            <Button variant="hero" size="sm" onClick={handleExportPdf}>
-              <Download className="mr-1 h-4 w-4" /> Export PDF
+            <Button variant="hero" size="sm" onClick={handleExportPdf} disabled={exporting}>
+              {exporting ? (
+                <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+              ) : (
+                <Download className="mr-1 h-4 w-4" />
+              )}
+              {exporting ? "Generating…" : "Export PDF"}
             </Button>
             <Button variant="glass" size="sm" onClick={() => toast.success("Report saved to your library")}>
               <Save className="mr-1 h-4 w-4" /> Save report

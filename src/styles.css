@@ -341,3 +341,25 @@
     content: "" !important;
   }
 }
+
+/* Light theme override used while rendering the report to a PDF/canvas.
+   Applied as a class (not @media print) because html2canvas snapshots
+   the live DOM, not a print stylesheet. */
+.pdf-export-mode {
+  background: #ffffff !important;
+}
+.pdf-export-mode,
+.pdf-export-mode * {
+  color: #111111 !important;
+}
+.pdf-export-mode .glass,
+.pdf-export-mode .glass-strong {
+  background: #ffffff !important;
+  border: 1px solid #e2e2e2 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+.pdf-export-mode .bg-secondary,
+.pdf-export-mode .bg-secondary\/50 {
+  background: #f4f4f5 !important;
+}
