@@ -74,7 +74,8 @@ Generate the growth analysis JSON now.`;
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: userPrompt },
       ],
-      temperature: 0.8,
+      temperature: 0.9,
+      max_tokens: 6000,
       response_format: { type: "json_object" },
     }),
   });
