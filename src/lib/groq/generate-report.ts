@@ -130,5 +130,6 @@ export const generateGrowthReport = createServerFn({ method: "POST" })
     }
 
     console.error("[generateGrowthReport] failed after retry:", lastError);
-    throw new Error("Couldn't generate your report right now. Please try again.");
+    const detail = lastError instanceof Error ? lastError.message : String(lastError);
+    throw new Error(`Couldn't generate your report right now — ${detail}`);
   });
