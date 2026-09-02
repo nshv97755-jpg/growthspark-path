@@ -75,7 +75,7 @@ Generate the growth analysis JSON now.`;
         { role: "user", content: userPrompt },
       ],
       temperature: 0.9,
-      max_completion_tokens: 8000,
+      max_completion_tokens: 7000,
       response_format: { type: "json_object" },
     }),
   });
