@@ -248,8 +248,10 @@ function ReportContent() {
               )}
               {exporting ? "Generating…" : "Export PDF"}
             </Button>
-            <Button variant="glass" size="sm" onClick={() => toast.success("Report saved to your library")}>
-              <Save className="mr-1 h-4 w-4" /> Save report
+            <Button asChild variant="glass" size="sm">
+              <Link to="/dashboard/history">
+                <Save className="mr-1 h-4 w-4" /> View in History
+              </Link>
             </Button>
             <Button asChild variant="glass" size="sm">
               <Link to="/dashboard/history">
@@ -258,6 +260,9 @@ function ReportContent() {
             </Button>
           </div>
         </div>
+        <p data-print-hide className="mt-3 text-xs text-muted-foreground">
+          This report is automatically saved to your history.
+        </p>
       </Reveal>
 
       <Dialog open={pdfOpen} onOpenChange={setPdfOpen}>
