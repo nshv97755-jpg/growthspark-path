@@ -202,3 +202,91 @@ export async function logApiCall(input: {
   });
   if (error) console.error("[db] logApiCall", error.message);
 }
+
+/* ---------------- Profile ---------------- */
+
+export type Profile = {
+  id: string;
+  display_name: string | null;
+  avatar_url: string | null;
+};
+
+export async function getCurrentUser(): Promise<{ id: string; email: string | null } | null> {
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) return null;
+  return { id: data.user.id, email: data.user.email ?? null };
+}
+
+export async function getProfile(): Promise<Profile | null> {
+  const userId = await getUserId();
+  if (!userId) return null;
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, display_name, avatar_url")
+    .eq("id", userId)
+    .maybeSingle();
+  if (error) {
+    console.error("[db] getProfile", error.message);
+    return null;
+  }
+  return data;
+}
+
+export async function upsertProfile(input: {
+  display_name?: string;
+  avatar_url?: string;
+}): Promise<boolean> {
+  const userId = await getUserId();
+  if (!userId) return false;
+  const { error } = await supabase
+    .from("profiles")
+    .upsert({ id: userId, ...input, updated_at: new Date().toISOString() });
+  if (error) {
+    console.error("[db] upsertProfile", error.message);
+    return false;
+  }
+  return true;
+}
+
+/** Uploads a new avatar image to the `avatars` storage bucket and returns
+ * its public URL, or null on failure. Does not update the profile row —
+ * call upsertProfile({ avatar_url }) after. */
+export async function uploadAvatar(file: File): Promise<string | null> {
+  const userId = await getUserId();
+  if (!userId) return null;
+  const ext = file.name.split(".").pop() || "jpg";
+  const path = `${userId}/avatar-${Date.now()}.${ext}`;
+  const { error } = await supabase.storage
+    .from("avatars")
+    .upload(path, file, { upsert: true, cacheControl: "3600" });
+  if (error) {
+    console.error("[db] uploadAvatar", error.message);
+    return null;
+  }
+  const { data } = supabase.storage.from("avatars").getPublicUrl(path);
+  return data.publicUrl;
+}
+
+/* ---------------- Reports with analysis details (for the Reports list) ---------------- */
+
+export type ReportWithAnalysis = {
+  id: string;
+  created_at: string;
+  content: unknown;
+  analysis: { username: string; score: number | null; potential: string | null } | null;
+};
+
+export async function listReportsWithAnalysis(): Promise<ReportWithAnalysis[]> {
+  const userId = await getUserId();
+  if (!userId) return [];
+  const { data, error } = await supabase
+    .from("reports")
+    .select("id, created_at, content, analysis:analyses(username, score, potential)")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+  if (error || !data) {
+    if (error) console.error("[db] listReportsWithAnalysis", error.message);
+    return [];
+  }
+  return data as unknown as ReportWithAnalysis[];
+}

@@ -125,6 +125,55 @@
 }
 
 
+/* Light theme — toggled via the .light class on <html> (see src/lib/theme.ts).
+   Dark (the values in :root above) remains the default look. */
+.light {
+  --background: #f6f6f8;
+  --foreground: #14161c;
+
+  --card: #ffffff;
+  --card-foreground: #14161c;
+  --popover: #ffffff;
+  --popover-foreground: #14161c;
+
+  --secondary: #eef0f3;
+  --secondary-foreground: #1f2430;
+
+  --muted: #f0f1f4;
+  --muted-foreground: #6b7280;
+
+  --accent: #fb923c;
+  --accent-foreground: #ffffff;
+
+  --border: rgba(15, 18, 26, 0.09);
+  --input: rgba(15, 18, 26, 0.12);
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #3a3f4b;
+  --sidebar-accent: #f3f4f6;
+  --sidebar-accent-foreground: #14161c;
+  --sidebar-border: rgba(15, 18, 26, 0.07);
+
+  --shadow-card: 0 1px 2px rgba(20, 22, 28, 0.05), 0 20px 40px -28px rgba(20, 22, 28, 0.18);
+}
+
+.light body {
+  background-image:
+    radial-gradient(120% 80% at 50% -10%, rgba(249, 115, 22, 0.06), transparent 60%),
+    radial-gradient(90% 60% at 0% 100%, rgba(249, 115, 22, 0.03), transparent 65%),
+    radial-gradient(90% 60% at 100% 100%, rgba(249, 115, 22, 0.03), transparent 65%);
+}
+
+.light .glass {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(15, 18, 26, 0.08);
+}
+
+.light .glass-strong {
+  background: #ffffff;
+  border: 1px solid rgba(15, 18, 26, 0.09);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

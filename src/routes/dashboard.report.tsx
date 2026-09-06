@@ -16,7 +16,6 @@ import {
   Quote,
   TrendingUp,
   Sparkles,
-  Rocket,
   Loader2,
 } from "lucide-react";
 import {
@@ -31,15 +30,9 @@ import {
 } from "recharts";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { reportData, sampleAnalysis } from "@/lib/mock";
+import { downloadNodeAsPdf } from "@/lib/pdf";
 
 function useStoredReport() {
   const [state, setState] = useState<{
@@ -133,47 +126,10 @@ function ReportPage() {
   return <ReportContent />;
 }
 
-interface Html2PdfInstance {
-  set: (opts: Record<string, unknown>) => Html2PdfInstance;
-  from: (el: HTMLElement) => Html2PdfInstance;
-  save: () => Promise<void>;
-}
-
-declare global {
-  interface Window {
-    html2pdf?: () => Html2PdfInstance;
-  }
-}
-
-let html2pdfLoader: Promise<NonNullable<Window["html2pdf"]>> | null = null;
-
-function loadHtml2Pdf() {
-  if (typeof window === "undefined") {
-    return Promise.reject(new Error("html2pdf can only run in the browser"));
-  }
-  if (window.html2pdf) return Promise.resolve(window.html2pdf);
-  if (!html2pdfLoader) {
-    html2pdfLoader = new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      script.src =
-        "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.3/html2pdf.bundle.min.js";
-      script.async = true;
-      script.onload = () => {
-        if (window.html2pdf) resolve(window.html2pdf);
-        else reject(new Error("html2pdf loaded but not found on window"));
-      };
-      script.onerror = () => reject(new Error("Failed to load PDF generator"));
-      document.head.appendChild(script);
-    });
-  }
-  return html2pdfLoader;
-}
-
 function ReportContent() {
   const stored = useStoredReport();
   const username = stored?.username ?? sampleAnalysis.username;
   const data = stored?.data ?? reportData;
-  const [pdfOpen, setPdfOpen] = useState(false);
   const [exporting, setExporting] = useState(false);
   const reportRef = useRef<HTMLDivElement>(null);
 
@@ -192,22 +148,7 @@ function ReportContent() {
     });
 
     try {
-      const html2pdf = await loadHtml2Pdf();
-      await html2pdf()
-        .set({
-          margin: 10,
-          filename: `growthpilot-report-${username}.pdf`,
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: {
-            scale: 2,
-            backgroundColor: "#ffffff",
-            useCORS: true,
-          },
-          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-          pagebreak: { mode: ["avoid-all", "css", "legacy"] },
-        })
-        .from(node)
-        .save();
+      await downloadNodeAsPdf(node, `growthpilot-report-${username}.pdf`);
       toast.success("PDF downloaded", { id: toastId });
     } catch (err) {
       console.error("[handleExportPdf] failed:", err);
@@ -264,31 +205,6 @@ function ReportContent() {
           This report is automatically saved to your history.
         </p>
       </Reveal>
-
-      <Dialog open={pdfOpen} onOpenChange={setPdfOpen}>
-        <DialogContent className="glass-strong border-white/[0.07] sm:rounded-3xl text-center">
-          <DialogHeader className="items-center gap-4">
-            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand shadow-glow">
-              <Rocket className="h-6 w-6 text-primary-foreground" />
-            </span>
-            <div className="space-y-2">
-              <DialogTitle className="font-display text-2xl font-bold">
-                🚀 Coming Soon
-              </DialogTitle>
-              <DialogDescription className="text-base text-muted-foreground max-w-xs mx-auto">
-                PDF Export will be available very soon.
-                <br />
-                We're putting the finishing touches on this feature.
-              </DialogDescription>
-            </div>
-          </DialogHeader>
-          <div className="flex justify-center pt-2">
-            <Button variant="hero" size="sm" onClick={() => setPdfOpen(false)}>
-              OK
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* Why not growing */}
       <Section icon={Lightbulb} title="Why You're Not Growing">
