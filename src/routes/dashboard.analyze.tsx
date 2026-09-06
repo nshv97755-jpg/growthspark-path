@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
@@ -19,7 +19,7 @@ import { ScoreRing } from "@/components/score-ring";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useInstagramConnection } from "@/hooks/use-instagram-connection";
-import { logApiCall, saveAnalysis, saveReport } from "@/lib/db";
+import { logApiCall, saveAnalysis, saveReport, countAnalysesToday } from "@/lib/db";
 import { sampleAnalysis, lockedIssues, loadingMessages } from "@/lib/mock";
 import { generateGrowthReport, type GeneratedReport } from "@/lib/groq/generate-report";
 
@@ -38,13 +38,32 @@ export const Route = createFileRoute("/dashboard/analyze")({
 
 type Stage = "idle" | "loading" | "result";
 
+const FREE_DAILY_LIMIT = 1;
+
 function Analyze() {
   const [stage, setStage] = useState<Stage>("idle");
   const [username, setUsername] = useState("");
   const [aiData, setAiData] = useState<GeneratedReport | null>(null);
   const [genError, setGenError] = useState<string | null>(null);
+  const [limitReached, setLimitReached] = useState(false);
   const aiPromiseRef = useRef<Promise<GeneratedReport | null> | null>(null);
   const { status, connection, connect } = useInstagramConnection();
+
+  // Re-check the daily quota whenever the user lands here already connected
+  // (e.g. navigating back after using their free analysis earlier today).
+  useEffect(() => {
+    if (status !== "connected") return;
+    countAnalysesToday().then((count) => setLimitReached(count >= FREE_DAILY_LIMIT));
+  }, [status]);
+
+  const checkQuota = async () => {
+    const count = await countAnalysesToday();
+    if (count >= FREE_DAILY_LIMIT) {
+      setLimitReached(true);
+      return false;
+    }
+    return true;
+  };
 
   const startGeneration = (handle: string) => {
     setAiData(null);
@@ -76,6 +95,8 @@ function Analyze() {
       const c = await connect();
       setUsername(c.username);
       toast.success(`Instagram connected — @${c.username}`);
+      const allowed = await checkQuota();
+      if (!allowed) return;
       setStage("loading");
       startGeneration(c.username);
     } catch (err) {
@@ -143,12 +164,18 @@ function Analyze() {
           />
         )}
 
-        {connected && stage === "idle" && (
+        {connected && stage === "idle" && limitReached && (
+          <LimitReached key="limit" />
+        )}
+
+        {connected && stage === "idle" && !limitReached && (
           <Idle
             key="idle"
             username={username}
             setUsername={setUsername}
-            onStart={() => {
+            onStart={async () => {
+              const allowed = await checkQuota();
+              if (!allowed) return;
               setStage("loading");
               startGeneration(username.trim().replace(/^@/, ""));
             }}
@@ -160,7 +187,9 @@ function Analyze() {
             waitFor={aiPromiseRef.current}
             onDone={() => {
               setStage("result");
-              void persistAnalysis(username, aiData);
+              void persistAnalysis(username, aiData).then(() => {
+                void checkQuota();
+              });
             }}
           />
         )}
@@ -175,6 +204,38 @@ function Analyze() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+function LimitReached() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -16 }}
+      className="flex min-h-[60vh] flex-col items-center justify-center text-center"
+    >
+      <span className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand text-primary-foreground">
+        <Lock className="h-8 w-8" />
+      </span>
+      <h2 className="max-w-xl font-display text-4xl font-bold sm:text-5xl">
+        You've used today's <span className="text-gradient">free analysis</span>
+      </h2>
+      <p className="mt-3 max-w-md text-muted-foreground">
+        Free plan includes 1 analysis per day. It resets at midnight — or upgrade to Pro for
+        unlimited analyses right now.
+      </p>
+      <div className="mt-8 flex flex-wrap justify-center gap-3">
+        <Button asChild variant="hero" size="xl">
+          <Link to="/dashboard/billing">
+            <Sparkles className="h-4 w-4" /> Upgrade to Pro
+          </Link>
+        </Button>
+        <Button asChild variant="glass" size="xl">
+          <Link to="/dashboard/history">View past reports</Link>
+        </Button>
+      </div>
+    </motion.div>
   );
 }
 
@@ -243,7 +304,7 @@ function Idle({
 }: {
   username: string;
   setUsername: (v: string) => void;
-  onStart: () => void;
+  onStart: () => void | Promise<void>;
 }) {
   return (
     <motion.div
