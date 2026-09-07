@@ -113,7 +113,22 @@ function AuthPage() {
                   variant="glass"
                   size="lg"
                   className="w-full"
-                  onClick={() => navigate({ to: "/dashboard" })}
+                  disabled={busy}
+                  onClick={async () => {
+                    setBusy(true);
+                    try {
+                      const { error } = await supabase.auth.signInWithOAuth({
+                        provider: "google",
+                        options: { redirectTo: `${window.location.origin}/dashboard` },
+                      });
+                      if (error) throw error;
+                    } catch (err) {
+                      toast.error(
+                        err instanceof Error ? err.message : "Google sign-in failed. Please try again.",
+                      );
+                      setBusy(false);
+                    }
+                  }}
                 >
                   <GoogleIcon /> Continue with Google
                 </Button>
