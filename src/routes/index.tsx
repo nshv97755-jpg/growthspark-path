@@ -313,12 +313,7 @@ function Landing() {
         {/* Trust bar */}
         <div className="mx-auto mt-16 max-w-5xl">
           <Reveal>
-            <p className="text-center text-sm text-muted-foreground">
-              Join 12,000+ creators &amp; brands already growing
-            </p>
-            <div className="mt-7">
-              <BrandMarquee />
-            </div>
+            <BrandMarquee />
           </Reveal>
         </div>
       </section>
@@ -372,9 +367,6 @@ function Landing() {
         <AuroraBackground className="opacity-50" />
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-sm font-medium uppercase tracking-widest text-primary">Pricing</p>
-          <h2 className="mt-3 font-display text-[2.1rem] font-bold tracking-[-0.03em] sm:text-[2.75rem]">
-            Simple, honest pricing
-          </h2>
           <p className="mt-4 text-muted-foreground">
             Start free. Upgrade when you&apos;re ready to unlock the full playbook.
           </p>
